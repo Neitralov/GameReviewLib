@@ -16,14 +16,12 @@ export default {
     },
     extend: {
       colors: {
-        "primary": "#fb8b24",
-        "dark-primary": "#f98212",
-        "neutral": "#ffffff",
-        "dark-neutral": "#fafafa",
-        "second": "#d4cfcc",
-        "attention": "#f54949",
-        "muted": "#454545",
-        "background": "#f4f4f4"
+        "primary": "#4681F4",
+        "danger": "#F55454",
+        "star": "#E2DC3D",
+        "muted": "#555555",
+        "neutral": "#FFFFFF",
+        "background": "#E9E9E9"
       },
       fontFamily: {
         "sans": "Ubuntu"
