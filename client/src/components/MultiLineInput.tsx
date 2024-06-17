@@ -15,6 +15,6 @@ export enum FontSizes {
 
 export const MultiLineInput: FC<MultiLineInputProps> = ({fontSize, placeholder}) => {
   return (
-    <textarea className={`${fontSize} w-full bg-background px-3 py-1.5 rounded shadow-sm resize-none`} rows={3} placeholder={placeholder} />
+    <textarea className={`${fontSize} w-full bg-background px-3 py-1.5 rounded shadow-sm resize-none outline-primary`} rows={3} placeholder={placeholder} />
   )
 }

@@ -15,6 +15,6 @@ export enum FontSizes {
 
 export const SingleLineInput: FC<SingleLineInputProps> = ({fontSize, placeholder}) => {
   return (
-    <input className={`${fontSize} w-full bg-background px-3 py-1.5 rounded shadow-sm`} type="text" placeholder={placeholder} />
+    <input className={`${fontSize} w-full bg-background px-3 py-1.5 rounded shadow-sm outline-primary`} type="text" placeholder={placeholder} />
   )
 }

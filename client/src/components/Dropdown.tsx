@@ -15,9 +15,9 @@ export const Dropdown: FC<DropdownProps> = ({header, isStretch, color}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className={"relative"}>
+    <div className={`${isStretch ? "relative" : ""}`}>
       <button
-        className={`${isStretch && "w-full justify-between"} flex items-center gap-0.5 text-sm ${color} px-3 py-1.5 rounded shadow-sm select-none`}
+        className={`${isStretch ? "w-full justify-between" : ""} flex items-center gap-0.5 text-sm ${color} px-3 py-1.5 rounded shadow-sm select-none`}
         type={"button"}
         onClick={() => setIsOpen(!isOpen)}
         onBlur={() => setIsOpen(false)}>
@@ -27,10 +27,17 @@ export const Dropdown: FC<DropdownProps> = ({header, isStretch, color}) => {
         </svg>
       </button>
 
-      <div className={`${!isOpen && "hidden"} ${isStretch && "w-full"} z-10 absolute ${color} mt-2 px-2 py-1.5 shadow rounded`}>
-        <p className="hover:bg-background text-sm px-2 py-0.5 rounded" onMouseDown={() => setIsOpen(false)}>Пункт меню</p>
-        <p className="hover:bg-background text-sm px-2 py-0.5 rounded" onMouseDown={() => setIsOpen(false)}>Пункт меню</p>
-        <p className="hover:bg-background text-sm px-2 py-0.5 rounded" onMouseDown={() => setIsOpen(false)}>Пункт меню</p>
+      <div
+        className={`${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} z-10 absolute ${color} mt-2 px-2 py-1.5 shadow rounded`}>
+        <p
+          className={`${color == DropdownColors.Neutral ? "hover:bg-background" : "hover:bg-neutral"} text-sm px-2 py-0.5 rounded`}
+          onMouseDown={() => setIsOpen(false)}>Пункт меню</p>
+        <p
+          className={`${color == DropdownColors.Neutral ? "hover:bg-background" : "hover:bg-neutral"} text-sm px-2 py-0.5 rounded`}
+          onMouseDown={() => setIsOpen(false)}>Пункт меню</p>
+        <p
+          className={`${color == DropdownColors.Neutral ? "hover:bg-background" : "hover:bg-neutral"} text-sm px-2 py-0.5 rounded`}
+          onMouseDown={() => setIsOpen(false)}>Пункт меню</p>
       </div>
     </div>
   )
