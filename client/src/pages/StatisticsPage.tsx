@@ -1,7 +1,7 @@
 import {ValueFieldWithHeader} from "../components/ValueFieldWithHeader.tsx";
 import {Details} from "../components/Details.tsx";
 
-export default function Statistics() {
+export const StatisticsPage = () => {
   return (
     <>
       <div className={"flex flex-col gap-2"}>

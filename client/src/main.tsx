@@ -1,21 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
+import {App} from './layout/App.tsx'
+import {IndexPage} from "./pages/IndexPage.tsx";
+import {CompletedGamesPage} from "./pages/CompletedGamesPage.tsx";
+import {PostponedGamesPage} from "./pages/PostponedGamesPage.tsx";
+import {StatisticsPage} from "./pages/StatisticsPage.tsx";
+import {ErrorPage} from "./pages/ErrorPage.tsx";
 import './assets/index.css'
-import ErrorPage from "./pages/Error-page.tsx";
-import CompletedGames from "./pages/CompletedGames.tsx";
-import PostponedGames from "./pages/PostponedGames.tsx";
-import Statistics from "./pages/Statistics.tsx";
-import Index from "./pages/Index.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path={"/"} element={<App />} errorElement={<ErrorPage />}>
-      <Route index element={<Index />}/>
-      <Route path={"completed"} element={<CompletedGames />}/>
-      <Route path={"postponed"} element={<PostponedGames />}/>
-      <Route path={"statistics"} element={<Statistics />}/>
+      <Route index element={<IndexPage />}/>
+      <Route path={"completed"} element={<CompletedGamesPage />}/>
+      <Route path={"postponed"} element={<PostponedGamesPage />}/>
+      <Route path={"statistics"} element={<StatisticsPage />}/>
     </Route>
   )
 )

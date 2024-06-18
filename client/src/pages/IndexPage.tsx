@@ -1,7 +1,7 @@
 import {Carousel} from "../components/Carousel.tsx";
 import {GameCard} from "../components/GameCard.tsx";
 
-export default function Index() {
+export const IndexPage = () => {
   return (
     <>
       <Carousel header={"🎉 Зал славы - Лучшие игры за все время! 🎉"} isGradientBackground={true}>

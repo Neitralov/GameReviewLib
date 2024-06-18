@@ -17,11 +17,15 @@ export default {
     extend: {
       colors: {
         "primary": "#4681F4",
+        "primary-hover": "#3D77EA",
         "danger": "#F55454",
+        "danger-hover": "#EB4A4A",
         "star": "#E2DC3D",
         "muted": "#555555",
         "neutral": "#FFFFFF",
-        "background": "#E9E9E9"
+        "neutral-hover": "#F6F6F6",
+        "background": "#E9E9E9",
+        "background-hover": "#E0E0E0",
       },
       fontFamily: {
         "sans": "Ubuntu"

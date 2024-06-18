@@ -1,8 +1,8 @@
 import {GameCard} from "./GameCard.tsx";
 
-export default function CardGrid() {
+export const CardGrid = () => {
   return (
-    <div className={"grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] gap-5 justify-items-center"}>
+    <div className={"grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] justify-items-center gap-5"}>
       <GameCard />
       <GameCard />
       <GameCard />
