@@ -4,7 +4,7 @@ namespace WebAPI.Controllers;
 [Route("/api/reviews")]
 public class ReviewsController(GameReviewService reviewService) : ApiController
 {
-    /// <summary>Добавить новый обзор в магазин</summary>
+    /// <summary>Добавить новый обзор</summary>
     /// <response code="201">Обзор создан</response>
     /// <response code="400">
     /// Название, год выхода, жанр, режим, движок, оценка игры указано некорректно;
@@ -99,6 +99,20 @@ public class ReviewsController(GameReviewService reviewService) : ApiController
         ErrorOr<Deleted> removeReviewResult = await reviewService.RemoveReview(reviewId);
         
         return removeReviewResult.Match(_ => NoContent(), Problem);   
+    }
+
+    /// <summary>Загрузить постер в хранилище статических файлов</summary>
+    /// <response code="204">Постер успешно загружен</response>
+    [HttpPost("upload-poster")]
+    [ProducesResponseType(204)]
+    public async Task<IActionResult> UploadPoster(IFormFile file)
+    {
+        Directory.CreateDirectory("/app/wwwroot");
+        
+        await using var fileStream = new FileStream($"/app/wwwroot/{file.FileName}", FileMode.Create);
+        await file.CopyToAsync(fileStream);
+        
+        return NoContent();
     }
     
     private static ErrorOr<GameReview> CreateReviewFrom(CreateReviewRequest request)

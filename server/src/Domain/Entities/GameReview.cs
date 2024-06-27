@@ -11,7 +11,7 @@ public class GameReview
     public bool IsCompleted { get; private set; }
     public int Score { get; private set; }
     public bool IsBestGame { get; private set; }
-    public string Comment { get; private set; } = string.Empty;
+    public string? Comment { get; private set; } = string.Empty;
     public string PosterPath { get; private set; } = string.Empty;
     public DateTime Timestamp { get; private set; }
 
@@ -34,7 +34,7 @@ public class GameReview
         bool isCompleted,
         int score,
         bool isBestGame,
-        string comment,
+        string? comment,
         string posterPath,
         Guid? id = null)
     {
@@ -46,13 +46,13 @@ public class GameReview
         if (releaseYear is < MinReleaseYear or > MaxReleaseYear)
             errors.Add(DomainErrors.GameReview.InvalidReleaseYear);
         
-        if (!Enum.IsDefined(genre))
+        if (genre == 0 || !Enum.IsDefined(genre))
             errors.Add(DomainErrors.GameReview.InvalidGenre);
         
-        if (!Enum.IsDefined(mode))
+        if (mode == 0 || !Enum.IsDefined(mode))
             errors.Add(DomainErrors.GameReview.InvalidMode);
         
-        if (!Enum.IsDefined(engine))
+        if (engine == 0 || !Enum.IsDefined(engine))
             errors.Add(DomainErrors.GameReview.InvalidEngine);
         
         if (score is < MinScore or > MaxScore)

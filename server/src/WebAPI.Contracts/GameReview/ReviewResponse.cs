@@ -12,7 +12,7 @@ public record ReviewResponse(
     bool IsCompleted,
     int Score,
     bool IsBestGame,
-    string Comment,
+    string? Comment,
     string PosterPath)
 {
     /// <example>94fd6a5a-8cb8-4374-a9ea-7471394bd8cd</example>
@@ -34,7 +34,7 @@ public record ReviewResponse(
     /// <example>false</example>
     public bool IsBestGame { get; init; } = IsBestGame;
     /// <example>This is like DiggerOnline</example>
-    public string Comment { get; init; } = Comment;
+    public string? Comment { get; init; } = Comment;
     /// <example>/posters/poster1</example>
     public string PosterPath { get; init; } = PosterPath;
 }

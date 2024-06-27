@@ -24,7 +24,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
         var newestTimestamp = reviews.Find(reviwew => reviwew.IsCompleted).Max(review => review.Timestamp);
         var review = reviews.FindOne(review => review.Timestamp == newestTimestamp);
 
-        return Task.FromResult(review.Title);
+        return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
 
     public Task<string> GetNewestCompletedGame()
@@ -33,7 +33,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
         var maxReleaseYear = reviews.Max(review => review.ReleaseYear);
         var review = reviews.FindOne(review => review.ReleaseYear == maxReleaseYear);
         
-        return Task.FromResult(review.Title);
+        return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
 
     public Task<string> GetOldestCompletedGame()
@@ -42,7 +42,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
         var minReleaseYear = reviews.Min(review => review.ReleaseYear);
         var review = reviews.FindOne(review => review.ReleaseYear == minReleaseYear);
         
-        return Task.FromResult(review.Title);
+        return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
 
     public Task<List<RatingDto>> GetRatingOfCompletedGamesByGenre()

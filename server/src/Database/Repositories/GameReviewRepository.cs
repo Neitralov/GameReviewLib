@@ -21,7 +21,7 @@ public class GameReviewRepository(LiteDatabase database) : IGameReviewRepository
     public Task<List<GameReview>> GetReviews()
     {
         var reviews = database.GetCollection<GameReview>();
-        var orderedReviews = reviews.Query().OrderBy(review => review.Timestamp).ToList();
+        var orderedReviews = reviews.Query().OrderByDescending(review => review.Timestamp).ToList();
 
         return Task.FromResult(orderedReviews);
     }

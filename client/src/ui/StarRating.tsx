@@ -1,8 +1,12 @@
-import {useState} from "react";
+import {FC} from "react";
 import {BlankStarIcon, StarIcon} from "../icons.tsx";
 
-export const StarRating = () => {
-  const [value, setValue] = useState(0);
+interface Props {
+  value: number,
+  setValue: (value: number) => void
+}
+
+export const StarRating:FC<Props> = ({value, setValue}) => {
 
   function GetIndex(index: number) {
     setValue(index)

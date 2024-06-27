@@ -2,7 +2,8 @@ namespace Domain.Enums;
 
 public enum Genres
 {
-    ActionRpg = 1,
+    None,
+    ActionRpg,
     Strategy,
     Shooter,
     Sandbox

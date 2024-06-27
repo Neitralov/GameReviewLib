@@ -11,7 +11,7 @@ public record CreateReviewRequest(
     bool IsCompleted,
     int Score,
     bool IsBestGame,
-    string Comment,
+    string? Comment,
     string PosterPath)
 {
     /// <example>Minecraft</example>
@@ -31,7 +31,7 @@ public record CreateReviewRequest(
     /// <example>false</example>
     public bool IsBestGame { get; init; } = IsBestGame;
     /// <example>This is like DiggerOnline</example>
-    public string Comment { get; init; } = Comment;
+    public string? Comment { get; init; } = Comment;
     /// <example>/posters/poster1</example>
     public string PosterPath { get; init; } = PosterPath;
 }

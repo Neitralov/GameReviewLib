@@ -21,5 +21,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\WebAPI.Contracts\WebAPI.Contracts.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
 
 </Project>

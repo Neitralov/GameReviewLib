@@ -67,7 +67,7 @@ public class StatisticsController(StatisticsService statisticsService) : ApiCont
     {
         var ratingOfCompletedGamesByGenre = await statisticsService.GetRatingOfCompletedGamesByGenre();
         
-        return Ok(ratingOfCompletedGamesByGenre.Adapt<RatingResponse>());
+        return Ok(ratingOfCompletedGamesByGenre.Adapt<List<RatingResponse>>());
     }
     
     /// <summary>Получить рейтинг количества пройденных игр по режимам</summary>
@@ -78,7 +78,7 @@ public class StatisticsController(StatisticsService statisticsService) : ApiCont
     {
         var ratingOfCompletedGamesByMode = await statisticsService.GetRatingOfCompletedGamesByMode();
 
-        return Ok(ratingOfCompletedGamesByMode.Adapt<RatingResponse>());
+        return Ok(ratingOfCompletedGamesByMode.Adapt<List<RatingResponse>>());
     }
     
     /// <summary>Получить рейтинг количества пройденных игр по движкам</summary>
@@ -89,6 +89,6 @@ public class StatisticsController(StatisticsService statisticsService) : ApiCont
     {
         var ratingOfCompletedGamesByEngine = await statisticsService.GetRatingOfCompletedGamesByEngine();
 
-        return Ok(ratingOfCompletedGamesByEngine.Adapt<RatingResponse>());
+        return Ok(ratingOfCompletedGamesByEngine.Adapt<List<RatingResponse>>());
     }
 }
