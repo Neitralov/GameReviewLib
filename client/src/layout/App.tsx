@@ -31,7 +31,7 @@ export const App = () => {
   return (
     <ReviewsContext.Provider value={{reviews, setReviews, isReviewsLoaded}}>
       <div className={"flex flex-col min-h-screen xl:gap-5 gap-4 bg-background"}>
-        <Header openEditor={() => setIsEditorOpen(true)}/>
+        <Header openEditor={() => setIsEditorOpen(true)} loadReviewToEditor={LoadReviewToEditor} />
         <main className={"flex flex-col xl:container w-full xl:gap-5 gap-4 xl:px-[50px] px-4 pb-5"}>
           <Outlet context={[LoadReviewToEditor]}/>
         </main>

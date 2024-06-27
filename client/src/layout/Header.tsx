@@ -1,18 +1,23 @@
-import {FC} from "react";
+import {FC, useContext} from "react";
 import {NavLink} from "react-router-dom";
 import {PrimaryButton} from "../ui/buttons/PrimaryButton.tsx";
+import {SearchField} from "../ui/SearchField.tsx";
+import {ReviewsContext} from "../context";
 
 interface Props {
   openEditor: () => void
+  loadReviewToEditor: (review: IReview) => void
 }
 
-export const Header: FC<Props> = ({openEditor}) => {
+export const Header: FC<Props> = ({openEditor, loadReviewToEditor}) => {
+  const {reviews} = useContext(ReviewsContext)
+
   return (
     <header className={"sticky top-0 flex flex-col gap-4 bg-neutral xl:py-5 py-4 shadow-sm z-40"}>
 
       <div className={"flex xl:container w-full items-center xl:gap-5 gap-4 xl:px-[50px] px-4"}>
         <NavLink to={"/"} className={"xl:text-3xl text-2xl"}>GameReviewLib</NavLink>
-        <input className={"w-full xl:h-10 h-9 bg-background xl:text-base text-sm px-5 rounded outline-primary"} placeholder="Введите название..." />
+        <SearchField placeholder={"Введите название..."} GetItem={loadReviewToEditor} Data={reviews} />
         <PrimaryButton onClick={openEditor}>
           <span className={"xl:text-xl text-base text-white"}>Добавить</span>
         </PrimaryButton>

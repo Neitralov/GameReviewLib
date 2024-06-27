@@ -55,7 +55,8 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
       await axios.post<IReview>('http://localhost:8081/api/reviews', review)
         .then(response => {
           if (response.status == 201 && setReviews != null) {
-            setReviews([review, ...reviews])
+            const newReview = response.data
+            setReviews([newReview, ...reviews])
           }
         })
     } else {
