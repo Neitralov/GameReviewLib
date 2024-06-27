@@ -8,18 +8,19 @@ import axios from "axios";
 
 export const App = () => {
   const [reviews, setReviews] = useState<IReview[]>([]);
+  const [isReviewsLoaded, setIsReviewsLoaded] = useState<boolean>(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [review, setReview] = useState<IReview>(
     { id: '', title: '', releaseYear: 0, genre: 0, mode: 0, engine: 0, isCompleted: false, score: 0, isBestGame: false, comment: '', posterPath: ''}
   )
 
   useEffect(() => {
-    fetchReviews().then(x => x)
-  }, [isEditorOpen])
+    fetchReviews().then(() => setIsReviewsLoaded(true))
+  }, [])
 
   async function fetchReviews() {
     const response = await axios.get<IReview[]>('http://localhost:8081/api/reviews')
-    setReviews(response.data.filter(review => review.isCompleted))
+    setReviews(response.data)
   }
 
   function LoadReviewToEditor(review: IReview) {
@@ -28,11 +29,11 @@ export const App = () => {
   }
 
   return (
-    <ReviewsContext.Provider value={reviews}>
+    <ReviewsContext.Provider value={{reviews, setReviews, isReviewsLoaded}}>
       <div className={"flex flex-col min-h-screen xl:gap-5 gap-4 bg-background"}>
         <Header openEditor={() => setIsEditorOpen(true)}/>
         <main className={"flex flex-col xl:container w-full xl:gap-5 gap-4 xl:px-[50px] px-4 pb-5"}>
-          <Outlet context={[LoadReviewToEditor, isEditorOpen]}/>
+          <Outlet context={[LoadReviewToEditor]}/>
         </main>
       </div>
 

@@ -3,31 +3,21 @@ import {Button} from "../ui/buttons/Button.tsx";
 import {Tag} from "../ui/Tag.tsx";
 import {CardGrid} from "../components/CardGrid.tsx";
 import {ResetIcon} from "../icons.tsx";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useContext, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import {Sorts} from "../models/Sorts.ts";
 import {Genres} from "../models/Genres.ts";
 import {Modes} from "../models/Modes.ts";
 import {Engines} from "../models/Engines.ts";
 import {useReviews} from "../hooks/useReviews.tsx";
+import {ReviewsContext} from "../context";
 
 export const CompletedGamesPage = () => {
-  const [reviews, setReviews] = useState<IReview[]>([]);
-  const [LoadReviewToEditor, isEditorOpen] = useOutletContext<[(review: IReview) => void, boolean]>()
-  const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const {reviews, isReviewsLoaded} = useContext(ReviewsContext)
+  const [LoadReviewToEditor] = useOutletContext<[(review: IReview) => void]>()
   const [sort, setSort] = useState(0)
   const [filters, setFilters] = useState({genre: 0, mode: 0, engine: 0})
-  const sortedAndFilteredReviews = useReviews(reviews, sort, filters.genre, filters.mode, filters.engine)
-
-  useEffect(() => {
-    fetchReviews().then(() => setIsLoaded(true))
-  }, [isEditorOpen])
-
-  async function fetchReviews() {
-    const response = await axios.get<IReview[]>('http://localhost:8081/api/reviews')
-    setReviews(response.data.filter(review => review.isCompleted))
-  }
+  const sortedAndFilteredReviews = useReviews(reviews.filter(review => review.isCompleted), sort, filters.genre, filters.mode, filters.engine)
 
   function ClearSortAndFilters() {
     setSort(0)
@@ -70,7 +60,7 @@ export const CompletedGamesPage = () => {
 
       </div>
 
-      { isLoaded && <CardGrid reviews={sortedAndFilteredReviews} onClick={LoadReviewToEditor}/> }
+      { isReviewsLoaded && <CardGrid reviews={sortedAndFilteredReviews} onClick={LoadReviewToEditor}/> }
     </>
   )
 }

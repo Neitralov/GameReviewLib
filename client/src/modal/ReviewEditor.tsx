@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC} from "react";
+import React, {ChangeEvent, FC, useContext} from "react";
 import {Preview} from "../ui/Preview.tsx";
 import {CheckBox} from "../ui/CheckBox.tsx";
 import {StarRating} from "../ui/StarRating.tsx";
@@ -15,6 +15,7 @@ import {Genres} from "../models/Genres.ts";
 import {Modes} from "../models/Modes.ts";
 import {Engines} from "../models/Engines.ts";
 import axios from "axios";
+import {ReviewsContext} from "../context";
 
 interface Props {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => {
+  const {reviews, setReviews} = useContext(ReviewsContext)
 
   async function UploadImage(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files != null ) {
@@ -52,12 +54,18 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
     if (review.id == '') {
       await axios.post<IReview>('http://localhost:8081/api/reviews', review)
         .then(response => {
-          console.log(response)
+          if (response.status == 201 && setReviews != null) {
+            setReviews([review, ...reviews])
+          }
         })
     } else {
       await axios.put<IReview>('http://localhost:8081/api/reviews', review)
         .then(response => {
-          console.log(response)
+          if (response.status == 204 && setReviews != null) {
+            const index = reviews.findIndex(item => item.id == review.id)
+            reviews.splice(index, 1)
+            setReviews([review, ...reviews])
+          }
         })
     }
 
@@ -68,7 +76,10 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
   async function Remove() {
     await axios.delete<IReview>(`http://localhost:8081/api/reviews/${review.id}`)
       .then(response => {
-        console.log(response)
+        if (response.status == 204 && setReviews != null) {
+          const index = reviews.findIndex(item => item.id == review.id)
+          reviews.splice(index, 1)
+        }
       })
 
     setReview({ id: '', title: '', releaseYear: 0, genre: 0, mode: 0, engine: 0, isCompleted: false, score: 0, isBestGame: false, comment: '', posterPath: ''})
