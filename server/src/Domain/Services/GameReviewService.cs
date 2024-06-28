@@ -29,6 +29,9 @@ public class GameReviewService(IGameReviewRepository repository)
 
     public async Task<ErrorOr<Updated>> UpdateReview(GameReview review)
     {
+        if (review.IsBestGame && await repository.IsEnoughBestGames())
+            return DomainErrors.GameReview.TooManyBestGames;
+        
         var result = await repository.UpdateReview(review);
         return result ? Result.Updated : DomainErrors.GameReview.NotFound;
     }

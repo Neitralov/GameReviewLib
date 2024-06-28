@@ -15,8 +15,9 @@ import {Modes} from "../models/Modes.ts";
 import {Engines} from "../models/Engines.ts";
 import {ReviewsContext} from "../context";
 import {EmptyReview} from "../models/EmptyReview.ts";
-import {useValidationHelper} from "../hooks/useValidationHelper.tsx";
+import {useValidationHelper} from "../hooks/useValidationHelper.ts";
 import ReviewService from "../api/ReviewService.ts";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   setIsModalOpen: (isOpen: boolean) => void
@@ -27,6 +28,7 @@ interface Props {
 export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => {
   const {reviews, setReviews} = useContext(ReviewsContext)
   const inputFile = useRef<HTMLInputElement>(null)
+  const router = useNavigate()
 
   const posterValidator = useValidationHelper('Отсутствует обложка')
   const titleValidator = useValidationHelper('Название не может быть пустым')
@@ -81,6 +83,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
 
     if (!value) {
       setReview(prevState => ({...prevState, score: 0}))
+      setReview(prevState => ({...prevState, isBestGame: false}))
       scoreValidator.setDefaultErrorMessage()
       scoreValidator.setIsDirty(false)
     }
@@ -95,7 +98,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
 
   const onReleaseYearChange = (value: string) => {
     const regex = /[0-9]/;
-    if (regex.test(value)) {
+    if (regex.test(value[value.length - 1])) {
       return value
     } else {
       return value.slice(0, value.length - 1)
@@ -120,30 +123,35 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
       return
     }
 
-    if (review.id == '') {
-      const response = await ReviewService.createReview(review)
-
-      if (response.status == 201 && setReviews != null) {
-        const newReview = response.data
-        setReviews([newReview, ...reviews])
-      }
-    } else {
-      const response = await ReviewService.updateReview(review)
-
-      if (response.status == 204 && setReviews != null) {
-        const index = reviews.findIndex(item => item.id == review.id)
-        reviews.splice(index, 1)
-        setReviews([review, ...reviews])
-      }
+    if (review.isBestGame && reviews.filter(review => review.isBestGame).length == 10) {
+      alert("Нельзя поместить в зал славы более 10 игр")
+      return
     }
 
+    if (review.id == '') {
+      ReviewService.createReview(review).then((response) => {
+        const newReview = response.data
+        setReviews!([newReview, ...reviews])
+      })
+    } else {
+      ReviewService.updateReview(review).then(() => {
+        const index = reviews.findIndex(item => item.id == review.id)
+        reviews.splice(index, 1)
+        setReviews!([review, ...reviews])
+      })
+    }
+
+    router(review.isCompleted ? '/completed' : '/postponed')
     back()
   }
 
   const remove = async () => {
+    const confirmation = confirm("Вы точно хотите удалить обзор?")
+    if (!confirmation) return
+
     const response = await ReviewService.deleteReview(review)
 
-    if (response.status == 204 && setReviews != null) {
+    if (response.status == 204) {
       const index = reviews.findIndex(item => item.id == review.id)
       reviews.splice(index, 1)
     }
@@ -195,21 +203,18 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
 
   const validateGenre = () => {
     if (review.genre != 0) {
-      genreValidator.setErrorMessage('')
       genreValidator.setIsError(false)
     }
   }
 
   const validateMode = () => {
     if (review.mode != 0) {
-      modeValidator.setErrorMessage('')
       modeValidator.setIsError(false)
     }
   }
 
   const validateEngine = () => {
     if (review.engine != 0) {
-      engineValidator.setErrorMessage('')
       engineValidator.setIsError(false)
     }
   }
@@ -243,6 +248,11 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
             Загрузить обложку
             <input ref={inputFile} id={"image"} type={"file"} onChange={uploadImage}/>
           </label>
+          <a
+            className={"flex justify-center items-center h-fit gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm cursor-pointer select-none"}
+            href={`https://www.steamgriddb.com/search/grids?term=${review.title}`}>
+            Искать обложку
+          </a>
         </div>
 
         <div className={"flex flex-col gap-2 w-full"}>
@@ -263,23 +273,23 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
           <BgSelectWithHeader
             header={"Жанр"}
             selectHeader={Genres[review.genre].name}
-            error={genreValidator.isDirty ? genreValidator.errorMessage : ''}
-            onBlur={() => genreValidator.setIsDirty(true)}
+            error={(genreValidator.isDirty && genreValidator.isError) ? genreValidator.errorMessage : ''}
+            onBlur={() => null}
             getItem={(value) => setReview(prevState => ({...prevState, genre: value}))}
             data={Genres.filter(genre => genre.id != 0)} />
           <div className={"flex gap-3"}>
             <BgSelectWithHeader
               header={"Режим"}
               selectHeader={Modes[review.mode].name}
-              error={modeValidator.isDirty ? modeValidator.errorMessage : ''}
-              onBlur={() => modeValidator.setIsDirty(true)}
+              error={(modeValidator.isDirty && modeValidator.isError) ? modeValidator.errorMessage : ''}
+              onBlur={() => null}
               getItem={(value) => setReview(prevState => ({...prevState, mode: value}))}
               data={Modes.filter(mode => mode.id != 0)} />
             <BgSelectWithHeader
               header={"Движок"}
               selectHeader={Engines[review.engine].name}
-              error={engineValidator.isDirty ? engineValidator.errorMessage : ''}
-              onBlur={() => engineValidator.setIsDirty(true)}
+              error={(engineValidator.isDirty && engineValidator.isError) ? engineValidator.errorMessage : ''}
+              onBlur={() => null}
               getItem={(value) => setReview(prevState => ({...prevState, engine: value}))}
               data={Engines.filter(engine => engine.id != 0)} />
           </div>
