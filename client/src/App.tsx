@@ -1,29 +1,27 @@
 import {useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
-import {Header} from "./Header.tsx";
-import {Modal} from "../modal/Modal.tsx";
-import {ReviewEditor} from "../modal/ReviewEditor.tsx";
-import {ReviewsContext} from "../context";
-import axios from "axios";
+import {Header} from "./layout/Header.tsx";
+import {Modal} from "./modal/Modal.tsx";
+import {ReviewEditor} from "./modal/ReviewEditor.tsx";
+import {ReviewsContext} from "./context";
+import {EmptyReview} from "./models/EmptyReview.ts";
+import ReviewService from "./api/ReviewService.ts";
 
 export const App = () => {
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [isReviewsLoaded, setIsReviewsLoaded] = useState<boolean>(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [review, setReview] = useState<IReview>(
-    { id: '', title: '', releaseYear: 0, genre: 0, mode: 0, engine: 0, isCompleted: false, score: 0, isBestGame: false, comment: '', posterPath: ''}
-  )
+  const [review, setReview] = useState<IReview>(EmptyReview)
 
   useEffect(() => {
     fetchReviews().then(() => setIsReviewsLoaded(true))
   }, [])
 
-  async function fetchReviews() {
-    const response = await axios.get<IReview[]>('http://localhost:8081/api/reviews')
-    setReviews(response.data)
+  const fetchReviews = async () => {
+    setReviews(await ReviewService.getReviews())
   }
 
-  function LoadReviewToEditor(review: IReview) {
+  const loadReviewToEditor = (review: IReview) => {
     setReview(review)
     setIsEditorOpen(true)
   }
@@ -31,9 +29,9 @@ export const App = () => {
   return (
     <ReviewsContext.Provider value={{reviews, setReviews, isReviewsLoaded}}>
       <div className={"flex flex-col min-h-screen xl:gap-5 gap-4 bg-background"}>
-        <Header openEditor={() => setIsEditorOpen(true)} loadReviewToEditor={LoadReviewToEditor} />
+        <Header openEditor={() => setIsEditorOpen(true)} loadReviewToEditor={loadReviewToEditor} />
         <main className={"flex flex-col xl:container w-full xl:gap-5 gap-4 xl:px-[50px] px-4 pb-5"}>
-          <Outlet context={[LoadReviewToEditor]}/>
+          <Outlet context={[loadReviewToEditor]}/>
         </main>
       </div>
 

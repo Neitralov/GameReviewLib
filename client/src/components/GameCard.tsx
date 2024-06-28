@@ -15,14 +15,14 @@ export const GameCard:FC<Props> = ({review, onClick}) => {
       <div className={"flex justify-between"}>
         <p className={"text-sm text-white select-none"}>{review.releaseYear}</p>
         <div className={"flex items-center gap-[1px]"}>
-          { DisplayStars(review.score) }
+          { displayStars(review.score) }
         </div>
       </div>
     </div>
   )
 }
 
-function DisplayStars(value: number) {
+const displayStars = (value: number) => {
   let stars = []
 
   for (let index = 0; index < value; index++) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
-import {App} from './layout/App.tsx'
+import {App} from './App.tsx'
 import {IndexPage} from "./pages/IndexPage.tsx";
 import {CompletedGamesPage} from "./pages/CompletedGamesPage.tsx";
 import {PostponedGamesPage} from "./pages/PostponedGamesPage.tsx";

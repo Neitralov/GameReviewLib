@@ -2,23 +2,23 @@ import {FC, useState} from "react";
 
 interface Props {
   placeholder: string
-  GetItem: (review: IReview) => void
-  Data: IReview[]
+  getItem: (review: IReview) => void
+  data: IReview[]
 }
 
-export const SearchField: FC<Props> = ({placeholder, GetItem, Data}) => {
+export const SearchField: FC<Props> = ({placeholder, getItem, data}) => {
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [foundReviews, setFoundReviews] = useState<IReview[]>([])
 
-  function SelectItem(review: IReview) {
-    GetItem(review)
+  const selectItem = (review: IReview) => {
+    getItem(review)
     setValue('')
     setIsOpen(false)
   }
 
-  function onChange(value: string) {
-    const foundReviews = Data
+  const onChange = (value: string) => {
+    const foundReviews = data
       .filter(review => review.title.toLowerCase().includes(value.toLowerCase()))
       .slice(0, 11)
 
@@ -43,7 +43,7 @@ export const SearchField: FC<Props> = ({placeholder, GetItem, Data}) => {
             .map(review =>
               <p key={review.id}
                className={"hover:bg-background-hover xl:text-base text-sm px-2 py-0.5 rounded cursor-pointer"}
-               onMouseDown={() => SelectItem(review)}>{`${review.title} (${review.releaseYear})`}</p>
+               onMouseDown={() => selectItem(review)}>{`${review.title} (${review.releaseYear})`}</p>
         )}
       </div>
     </div>

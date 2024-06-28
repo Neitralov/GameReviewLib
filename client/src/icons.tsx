@@ -5,7 +5,7 @@ interface SmallStarIconProps {
 }
 
 interface StarIconProps {
-  index: number,
+  index: number
   action: (index: number) => void
 }
 

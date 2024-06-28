@@ -2,8 +2,8 @@ import React, {FC} from "react";
 import {ValueField} from "../ui/value-fields/ValueField.tsx";
 
 interface Props {
-  header: string;
-  children: React.ReactNode;
+  header: string
+  children: React.ReactNode
 }
 
 export const ValueFieldWithHeader: FC<Props> = ({header, children}) => {

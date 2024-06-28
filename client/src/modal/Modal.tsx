@@ -2,8 +2,8 @@ import React, {FC} from "react";
 import {createPortal} from 'react-dom';
 
 interface Props {
-  isOpen: boolean;
-  children: React.ReactNode;
+  isOpen: boolean
+  children: React.ReactNode
 }
 
 export const Modal: FC<Props> = ({isOpen, children}) => {

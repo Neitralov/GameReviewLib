@@ -1,9 +1,9 @@
 import {FC, ReactNode} from "react";
 
 interface Props {
-  header: string;
-  isGradientBackground: boolean;
-  children: ReactNode;
+  header: string
+  isGradientBackground: boolean
+  children: ReactNode
 }
 
 export const Carousel: FC<Props> = ({header, isGradientBackground, children}) => {

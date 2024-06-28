@@ -18,7 +18,7 @@ public class GameReview
     public const int MaxNumberOfTheBestGames = 10;
     public const int MinNameLength = 3;
     public const int MaxNameLength = 128;
-    public const int MinReleaseYear = 1970;
+    public const int MinReleaseYear = 1000;
     public const int MaxReleaseYear = 9999;
     public const int MinScore = 0;
     public const int MaxScore = 5;

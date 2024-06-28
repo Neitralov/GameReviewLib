@@ -8,7 +8,7 @@ interface Props {
 export const PrimaryButton: FC<Props> = ({onClick, children}) => {
   return (
     <button
-      className={"flex justify-center items-center h-fit gap-0.5 bg-primary hover:bg-primary-hover text-xs px-3 py-1.5 rounded shadow-sm"}
+      className={"flex justify-center items-center h-fit gap-0.5 bg-primary hover:bg-primary-hover text-xs px-3 py-1.5 rounded shadow-sm cursor-pointer select-none"}
       onClick={onClick}>
       { children }
     </button>

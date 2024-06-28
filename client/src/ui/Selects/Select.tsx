@@ -4,15 +4,15 @@ import {ArrowIcon} from "../../icons.tsx";
 interface Props {
   header: string
   isStretch: boolean
-  GetItem: (index: number) => void
-  Data: {id: number, name: string}[]
+  getItem: (index: number) => void
+  data: {id: number, name: string}[]
 }
 
-export const Select: FC<Props> = ({header, isStretch, GetItem, Data}) => {
+export const Select: FC<Props> = ({header, isStretch, getItem, data}) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  function SelectItem(index: number) {
-    GetItem(index)
+  const selectItem = (index: number) => {
+    getItem(index)
     setIsOpen(false)
   }
 
@@ -29,10 +29,10 @@ export const Select: FC<Props> = ({header, isStretch, GetItem, Data}) => {
 
       <div
         className={`absolute ${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} bg-neutral mt-2 px-2 py-1.5 shadow rounded z-10`}>
-        { Data.map(item =>
+        { data.map(item =>
           <p key={item.id}
              className={"hover:bg-neutral-hover text-sm px-2 py-0.5 rounded cursor-pointer"}
-             onMouseDown={() => SelectItem(item.id)}>{item.name}</p>
+             onMouseDown={() => selectItem(item.id)}>{item.name}</p>
         )}
       </div>
     </div>

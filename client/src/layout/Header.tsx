@@ -17,7 +17,7 @@ export const Header: FC<Props> = ({openEditor, loadReviewToEditor}) => {
 
       <div className={"flex xl:container w-full items-center xl:gap-5 gap-4 xl:px-[50px] px-4"}>
         <NavLink to={"/"} className={"xl:text-3xl text-2xl"}>GameReviewLib</NavLink>
-        <SearchField placeholder={"Введите название..."} GetItem={loadReviewToEditor} Data={reviews} />
+        <SearchField placeholder={"Введите название..."} getItem={loadReviewToEditor} data={reviews} />
         <PrimaryButton onClick={openEditor}>
           <span className={"xl:text-xl text-base text-white"}>Добавить</span>
         </PrimaryButton>

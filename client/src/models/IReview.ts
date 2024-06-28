@@ -1,7 +1,7 @@
 interface IReview {
   id?: string
   title: string
-  releaseYear: number
+  releaseYear: string
   genre: number
   mode: number
   engine: number

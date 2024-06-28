@@ -13,13 +13,13 @@ export const CheckBox: FC<Props> = ({children, value, setValue}) => {
     <div
       className={`flex items-center w-fit gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm cursor-pointer select-none`}
       onClick={() => setValue(!value)}>
-      { RenderCheckMark(value) }
+      { renderCheckMark(value) }
       { children }
     </div>
   )
 }
 
-function RenderCheckMark(value: boolean) {
+const renderCheckMark = (value: boolean) => {
   if (value) {
     return (<CheckMarkIcon/>)
   }

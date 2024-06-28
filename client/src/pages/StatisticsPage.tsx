@@ -17,7 +17,7 @@ export const StatisticsPage = () => {
     fetchStatistics().then(x => x)
   }, [])
 
-  async function fetchStatistics() {
+  const fetchStatistics = async () => {
     setNumberOfCompletedGames((await axios.get<number>('http://localhost:8081/api/statistics/number-of-completed-games')).data)
     setNumberOfPostponedGames((await axios.get<number>('http://localhost:8081/api/statistics/number-of-postponed-games')).data)
     setLastCompletedGame((await axios.get<string>('http://localhost:8081/api/statistics/last-completed-game')).data)

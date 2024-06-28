@@ -14,12 +14,12 @@ import {ReviewsContext} from "../context";
 
 export const PostponedGamesPage = () => {
   const {reviews, isReviewsLoaded} = useContext(ReviewsContext)
-  const [LoadReviewToEditor] = useOutletContext<[(review: IReview) => void]>()
+  const [loadReviewToEditor] = useOutletContext<[(review: IReview) => void]>()
   const [sort, setSort] = useState(0)
   const [filters, setFilters] = useState({genre: 0, mode: 0, engine: 0})
   const sortedAndFilteredReviews = useReviews(reviews.filter(review => !review.isCompleted), sort, filters.genre, filters.mode, filters.engine)
 
-  function ClearSortAndFilters() {
+  const ClearSortAndFilters = () => {
     setSort(0)
     setFilters({genre: 0, mode: 0, engine: 0})
   }
@@ -29,10 +29,10 @@ export const PostponedGamesPage = () => {
       <div className={"flex flex-col gap-2"}>
         <div className={"flex justify-between"}>
           <div className={"flex gap-2"}>
-            <Select header={"Сортировка"} isStretch={false} GetItem={setSort} Data={Sorts} />
-            <Select header={"Жанр"} isStretch={false} GetItem={(genre) => setFilters({...filters, genre: genre})} Data={Genres} />
-            <Select header={"Режим"} isStretch={false} GetItem={(mode) => setFilters({...filters, mode: mode})} Data={Modes} />
-            <Select header={"Движок"} isStretch={false} GetItem={(engine) => setFilters({...filters, engine: engine})} Data={Engines} />
+            <Select header={"Сортировка"} isStretch={false} getItem={setSort} data={Sorts} />
+            <Select header={"Жанр"} isStretch={false} getItem={(genre) => setFilters({...filters, genre: genre})} data={Genres} />
+            <Select header={"Режим"} isStretch={false} getItem={(mode) => setFilters({...filters, mode: mode})} data={Modes} />
+            <Select header={"Движок"} isStretch={false} getItem={(engine) => setFilters({...filters, engine: engine})} data={Engines} />
           </div>
 
           <div>
@@ -60,7 +60,7 @@ export const PostponedGamesPage = () => {
 
       </div>
 
-      { isReviewsLoaded && <CardGrid reviews={sortedAndFilteredReviews} onClick={LoadReviewToEditor}/> }
+      { isReviewsLoaded && <CardGrid reviews={sortedAndFilteredReviews} onClick={loadReviewToEditor}/> }
     </>
   )
 }

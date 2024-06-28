@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useContext} from "react";
+import React, {ChangeEvent, FC, useContext, useEffect, useRef} from "react";
 import {Preview} from "../ui/Preview.tsx";
 import {CheckBox} from "../ui/CheckBox.tsx";
 import {StarRating} from "../ui/StarRating.tsx";
@@ -8,88 +8,220 @@ import {PrimaryButton} from "../ui/buttons/PrimaryButton.tsx";
 import {BackIcon, SaveIcon, TrashBinIcon} from "../icons.tsx";
 import {BgSelectWithHeader} from "../components/BgSelectWithHeader.tsx";
 import {SingleLineInputWithHeader} from "../components/SingleLineInputWithHeader.tsx";
-import {SingleNumberInputWithHeader} from "../components/SingleNumberInputWithHeader.tsx";
 import {CheckBoxWithHeader} from "../components/CheckBoxWithHeader.tsx";
 import {MultiLineInputWithHeader} from "../components/MultiLineInputWithHeader.tsx";
 import {Genres} from "../models/Genres.ts";
 import {Modes} from "../models/Modes.ts";
 import {Engines} from "../models/Engines.ts";
-import axios from "axios";
 import {ReviewsContext} from "../context";
+import {EmptyReview} from "../models/EmptyReview.ts";
+import {useValidationHelper} from "../hooks/useValidationHelper.tsx";
+import ReviewService from "../api/ReviewService.ts";
 
 interface Props {
-  setIsModalOpen: (isOpen: boolean) => void;
+  setIsModalOpen: (isOpen: boolean) => void
   review: IReview
   setReview: React.Dispatch<React.SetStateAction<IReview>>
 }
 
 export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => {
   const {reviews, setReviews} = useContext(ReviewsContext)
+  const inputFile = useRef<HTMLInputElement>(null)
 
-  async function UploadImage(e: ChangeEvent<HTMLInputElement>) {
+  const posterValidator = useValidationHelper('Отсутствует обложка')
+  const titleValidator = useValidationHelper('Название не может быть пустым')
+  const releaseYearValidator = useValidationHelper('Дата выхода не может быть пустой')
+  const genreValidator = useValidationHelper('Необходимо выбрать жанр')
+  const modeValidator = useValidationHelper('Необходимо выбрать режим')
+  const engineValidator = useValidationHelper('Необходимо выбрать движок')
+  const scoreValidator = useValidationHelper('Необходимо указать оценку')
+
+  const validators = [
+    posterValidator,
+    titleValidator,
+    releaseYearValidator,
+    genreValidator,
+    modeValidator,
+    engineValidator,
+    scoreValidator
+  ]
+
+  useEffect(() => {
+    validatePoster()
+    validateTitle()
+    validateReleaseYear()
+    validateGenre()
+    validateMode()
+    validateEngine()
+    validateScore()
+  }, [review]);
+
+  const resetValidationErrors = () => {
+    validators.forEach(validator => {
+      validator.setDefaultErrorMessage()
+      validator.setIsDirty(false)
+      validator.setIsError(true)
+    })
+  }
+
+  const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files != null ) {
       let image = e.target.files[0]
       let formData = new FormData()
       formData.append("file", image)
-      let response = await fetch('http://localhost:8081/api/reviews/upload-poster', {method: "POST", body: formData})
+      const response = await ReviewService.uploadPoster(formData)
       if (response.ok) {
         setReview(prevState => ({...prevState, posterPath: image.name}))
       }
     }
   }
 
-  function SetIsCompleted(value: boolean) {
+  const setIsCompleted = (value: boolean) => {
     setReview(prevState => ({...prevState, isCompleted: value}))
-    if (!value)
+
+    if (!value) {
       setReview(prevState => ({...prevState, score: 0}))
+      scoreValidator.setDefaultErrorMessage()
+      scoreValidator.setIsDirty(false)
+    }
   }
 
-  function SetScore(value: number) {
+  const setScore = (value: number) => {
     setReview(prevState => ({...prevState, score: value}))
-    if (value < 5)
+    if (value < 5) {
       setReview(prevState => ({...prevState, isBestGame: false}))
+    }
   }
 
-  async function Save() {
-    if (review.id == '') {
-      await axios.post<IReview>('http://localhost:8081/api/reviews', review)
-        .then(response => {
-          if (response.status == 201 && setReviews != null) {
-            const newReview = response.data
-            setReviews([newReview, ...reviews])
-          }
-        })
+  const onReleaseYearChange = (value: string) => {
+    const regex = /[0-9]/;
+    if (regex.test(value)) {
+      return value
     } else {
-      await axios.put<IReview>('http://localhost:8081/api/reviews', review)
-        .then(response => {
-          if (response.status == 204 && setReviews != null) {
-            const index = reviews.findIndex(item => item.id == review.id)
-            reviews.splice(index, 1)
-            setReviews([review, ...reviews])
-          }
-        })
+      return value.slice(0, value.length - 1)
+    }
+  }
+
+  const save = async () => {
+    const isThereErrorInForm = validators.some(validator => validator.isError)
+
+    if (isThereErrorInForm) {
+      posterValidator.setIsDirty(true)
+      titleValidator.setIsDirty(true)
+      releaseYearValidator.setIsDirty(true)
+      genreValidator.setIsDirty(true)
+      modeValidator.setIsDirty(true)
+      engineValidator.setIsDirty(true)
+
+      if (review.isCompleted) {
+        scoreValidator.setIsDirty(true)
+      }
+
+      return
     }
 
-    setReview({ id: '', title: '', releaseYear: 0, genre: 0, mode: 0, engine: 0, isCompleted: false, score: 0, isBestGame: false, comment: '', posterPath: ''})
+    if (review.id == '') {
+      const response = await ReviewService.createReview(review)
+
+      if (response.status == 201 && setReviews != null) {
+        const newReview = response.data
+        setReviews([newReview, ...reviews])
+      }
+    } else {
+      const response = await ReviewService.updateReview(review)
+
+      if (response.status == 204 && setReviews != null) {
+        const index = reviews.findIndex(item => item.id == review.id)
+        reviews.splice(index, 1)
+        setReviews([review, ...reviews])
+      }
+    }
+
+    back()
+  }
+
+  const remove = async () => {
+    const response = await ReviewService.deleteReview(review)
+
+    if (response.status == 204 && setReviews != null) {
+      const index = reviews.findIndex(item => item.id == review.id)
+      reviews.splice(index, 1)
+    }
+
+    back()
+  }
+
+  const back = () => {
+    clearEditorState()
     setIsModalOpen(false)
   }
 
-  async function Remove() {
-    await axios.delete<IReview>(`http://localhost:8081/api/reviews/${review.id}`)
-      .then(response => {
-        if (response.status == 204 && setReviews != null) {
-          const index = reviews.findIndex(item => item.id == review.id)
-          reviews.splice(index, 1)
-        }
-      })
-
-    setReview({ id: '', title: '', releaseYear: 0, genre: 0, mode: 0, engine: 0, isCompleted: false, score: 0, isBestGame: false, comment: '', posterPath: ''})
-    setIsModalOpen(false)
+  const clearEditorState = () => {
+    setReview(EmptyReview)
+    inputFile.current!.value = ''
+    resetValidationErrors()
   }
 
-  function Back() {
-    setReview({ id: '', title: '', releaseYear: 0, genre: 0, mode: 0, engine: 0, isCompleted: false, score: 0, isBestGame: false, comment: '', posterPath: ''})
-    setIsModalOpen(false)
+  const validatePoster = () => {
+    if (review.posterPath != '') {
+      posterValidator.setErrorMessage('')
+      posterValidator.setIsError(false)
+    }
+  }
+
+  const validateTitle = () => {
+    if (review.title.length < 3) {
+      titleValidator.setErrorMessage('Название слишком короткое')
+      titleValidator.setIsError(true)
+    } else if (review.title.length > 128) {
+      titleValidator.setErrorMessage('Название слишком длинное')
+      titleValidator.setIsError(true)
+    }
+    else {
+      titleValidator.setErrorMessage('')
+      titleValidator.setIsError(false)
+    }
+  }
+
+  const validateReleaseYear = () => {
+    if (String(review.releaseYear).length != 4) {
+      releaseYearValidator.setErrorMessage('Год должен быть четырехзначным числом')
+      releaseYearValidator.setIsError(true)
+    } else {
+      releaseYearValidator.setErrorMessage('')
+      releaseYearValidator.setIsError(false)
+    }
+  }
+
+  const validateGenre = () => {
+    if (review.genre != 0) {
+      genreValidator.setErrorMessage('')
+      genreValidator.setIsError(false)
+    }
+  }
+
+  const validateMode = () => {
+    if (review.mode != 0) {
+      modeValidator.setErrorMessage('')
+      modeValidator.setIsError(false)
+    }
+  }
+
+  const validateEngine = () => {
+    if (review.engine != 0) {
+      engineValidator.setErrorMessage('')
+      engineValidator.setIsError(false)
+    }
+  }
+
+  const validateScore = () => {
+    if (!review.isCompleted || review.score != 0) {
+      scoreValidator.setErrorMessage('')
+      scoreValidator.setIsError(false)
+    } else {
+      scoreValidator.setDefaultErrorMessage()
+      scoreValidator.setIsError(true)
+    }
   }
 
   return (
@@ -104,11 +236,12 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
             </div>
             : <Preview imageUrl={`http://localhost:8081/${review.posterPath}`}/>
           }
+          { (posterValidator.isDirty && posterValidator.errorMessage) && <h2 className={"text-danger text-center"}>{posterValidator.errorMessage}</h2> }
           <label
             htmlFor={"image"}
-            className={"flex justify-center items-center h-fit gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm"}>
+            className={"flex justify-center items-center h-fit gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm select-none cursor-pointer"}>
             Загрузить обложку
-            <input id={"image"} type={"file"} onChange={UploadImage}/>
+            <input ref={inputFile} id={"image"} type={"file"} onChange={uploadImage}/>
           </label>
         </div>
 
@@ -117,39 +250,54 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
             header={"Название"}
             placeholder={"Введите название..."}
             value={review.title}
-            onChange={e => setReview(prevState => ({...prevState, title: e.target.value}))} />
-          <SingleNumberInputWithHeader
+            error={titleValidator.isDirty ? titleValidator.errorMessage : ''}
+            onBlur={() => titleValidator.setIsDirty(true)}
+            onChange={(e) => setReview(prevState => ({...prevState, title: e.target.value}))} />
+          <SingleLineInputWithHeader
             header={"Дата выхода"}
             placeholder={"Введите дату"}
             value={review.releaseYear}
-            onChange={e => setReview(prevState => ({...prevState, releaseYear: Number(e.target.value)}))} />
+            error={releaseYearValidator.isDirty ? releaseYearValidator.errorMessage : ''}
+            onBlur={() => releaseYearValidator.setIsDirty(true)}
+            onChange={(e) => setReview(prevState => ({...prevState, releaseYear: onReleaseYearChange(e.target.value)}))} />
           <BgSelectWithHeader
             header={"Жанр"}
             selectHeader={Genres[review.genre].name}
-            GetItem={(index) => setReview(prevState => ({...prevState, genre: index}))}
-            Data={Genres.filter(genre => genre.id != 0)} />
+            error={genreValidator.isDirty ? genreValidator.errorMessage : ''}
+            onBlur={() => genreValidator.setIsDirty(true)}
+            getItem={(value) => setReview(prevState => ({...prevState, genre: value}))}
+            data={Genres.filter(genre => genre.id != 0)} />
           <div className={"flex gap-3"}>
             <BgSelectWithHeader
               header={"Режим"}
               selectHeader={Modes[review.mode].name}
-              GetItem={(index) => setReview(prevState => ({...prevState, mode: index}))}
-              Data={Modes.filter(mode => mode.id != 0)} />
+              error={modeValidator.isDirty ? modeValidator.errorMessage : ''}
+              onBlur={() => modeValidator.setIsDirty(true)}
+              getItem={(value) => setReview(prevState => ({...prevState, mode: value}))}
+              data={Modes.filter(mode => mode.id != 0)} />
             <BgSelectWithHeader
               header={"Движок"}
               selectHeader={Engines[review.engine].name}
-              GetItem={(index) => setReview(prevState => ({...prevState, engine: index}))}
-              Data={Engines.filter(engine => engine.id != 0)} />
+              error={engineValidator.isDirty ? engineValidator.errorMessage : ''}
+              onBlur={() => engineValidator.setIsDirty(true)}
+              getItem={(value) => setReview(prevState => ({...prevState, engine: value}))}
+              data={Engines.filter(engine => engine.id != 0)} />
           </div>
           <CheckBoxWithHeader
             header={"Статус"}
             label={"Пройдена"}
             value={review.isCompleted}
-            setValue={SetIsCompleted} />
+            setValue={setIsCompleted} />
           { review.isCompleted &&
             <div className={"flex flex-col w-full gap-1"}>
-              <h2>Оценка</h2>
+              <div className={"flex gap-2"}>
+                <h2>Оценка</h2>
+                { (scoreValidator.isDirty && scoreValidator.errorMessage) && <h2 className={"text-danger text-center"}>{scoreValidator.errorMessage}</h2> }
+              </div>
               <div className={"flex gap-3"}>
-                <StarRating value={review.score} setValue={SetScore}/>
+                <StarRating
+                    value={review.score}
+                    setValue={setScore}/>
                 {review.score == 5 &&
                   <CheckBox
                     value={review.isBestGame}
@@ -171,7 +319,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
 
       <div className={"flex justify-between"}>
         <div>
-          <BgButton onClick={Back}>
+          <BgButton onClick={back}>
             <BackIcon/>
             <span className={"text-sm"}>Закрыть</span>
           </BgButton>
@@ -179,13 +327,13 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
 
         <div className={"flex gap-3"}>
           { review.id != '' &&
-            <DangerButton onClick={Remove}>
+            <DangerButton onClick={remove}>
               <TrashBinIcon/>
               <span className={"text-sm text-white"}>Удалить</span>
             </DangerButton>
           }
 
-          <PrimaryButton onClick={Save}>
+          <PrimaryButton onClick={save}>
             <SaveIcon/>
             <span className={"text-sm text-white"}>Сохранить</span>
           </PrimaryButton>
