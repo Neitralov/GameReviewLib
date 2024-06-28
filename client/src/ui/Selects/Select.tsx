@@ -31,7 +31,7 @@ export const Select: FC<Props> = ({header, isStretch, getItem, data}) => {
         className={`absolute ${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} bg-neutral mt-2 px-2 py-1.5 shadow rounded z-10`}>
         { data.map(item =>
           <p key={item.id}
-             className={"hover:bg-neutral-hover text-sm px-2 py-0.5 rounded cursor-pointer"}
+             className={"hover:bg-neutral-hover text-sm px-2 py-0.5 rounded select-none cursor-pointer"}
              onMouseDown={() => selectItem(item.id)}>{item.name}</p>
         )}
       </div>

@@ -28,11 +28,13 @@ export const App = () => {
 
   return (
     <ReviewsContext.Provider value={{reviews, setReviews, isReviewsLoaded}}>
-      <div className={"flex flex-col min-h-screen xl:gap-5 gap-4 bg-background"}>
+      <div className={"flex flex-col min-h-screen bg-background"}>
         <Header openEditor={() => setIsEditorOpen(true)} loadReviewToEditor={loadReviewToEditor} />
-        <main className={"flex flex-col xl:container w-full xl:gap-5 gap-4 xl:px-[50px] px-4 pb-5"}>
-          <Outlet context={[loadReviewToEditor]}/>
-        </main>
+        <div className={"overflow-y-scroll h-[calc(100vh-120px)]"}>
+          <main className={"flex flex-col xl:container w-full xl:gap-5 gap-4 xl:pt-5 pt-4 xl:px-[50px] px-4 pb-5"}>
+            <Outlet context={[loadReviewToEditor]}/>
+          </main>
+        </div>
       </div>
 
       <Modal isOpen={isEditorOpen}>

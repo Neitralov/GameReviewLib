@@ -9,7 +9,7 @@ import {Sorts} from "../models/Sorts.ts";
 import {Genres} from "../models/Genres.ts";
 import {Modes} from "../models/Modes.ts";
 import {Engines} from "../models/Engines.ts";
-import {useReviews} from "../hooks/useReviews.tsx";
+import {useReviews} from "../hooks/useReviews.ts";
 import {ReviewsContext} from "../context";
 
 export const CompletedGamesPage = () => {

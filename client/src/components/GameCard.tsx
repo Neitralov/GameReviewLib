@@ -9,13 +9,13 @@ interface Props {
 export const GameCard:FC<Props> = ({review, onClick}) => {
   return (
     <div
-      className={"flex flex-col-reverse min-w-[150px] w-[150px] h-[225px] bg-cover px-3 py-1.5 rounded-lg shadow-[inset_0_-35px_12px_-12px_rgba(0,0,0,35%)] cursor-pointer snap-start"}
+      className={"flex flex-col-reverse min-w-[150px] w-[150px] h-[225px] px-3 py-1.5 bg-cover shadow-[inset_0_-35px_12px_-12px_rgba(0,0,0,35%)] rounded-lg cursor-pointer snap-start"}
       style={{backgroundImage: `url('http://localhost:8081/${review.posterPath}')`}}
       onClick={() => onClick(review)}>
       <div className={"flex justify-between"}>
         <p className={"text-sm text-white select-none"}>{review.releaseYear}</p>
         <div className={"flex items-center gap-[1px]"}>
-          { displayStars(review.score) }
+          {displayStars(review.score)}
         </div>
       </div>
     </div>
