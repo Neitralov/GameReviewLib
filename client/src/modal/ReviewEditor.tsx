@@ -124,7 +124,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
     }
 
     if (review.isBestGame && reviews.filter(review => review.isBestGame).length == 10) {
-      alert("Нельзя поместить в зал славы более 10 игр")
+      alert("Нельзя поместить в зал славы более 14 игр")
       return
     }
 
@@ -239,7 +239,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
               className={"flex justify-center items-center min-w-[180px] w-[180px] h-[270px] text-sm bg-background rounded-lg"}>
               Обложка отсутствует
             </div>
-            : <Preview imageUrl={`http://localhost:8081/${review.posterPath}`}/>
+            : <Preview imageUrl={`http://localhost:7432/${review.posterPath}`}/>
           }
           { (posterValidator.isDirty && posterValidator.errorMessage) && <h2 className={"text-danger text-center"}>{posterValidator.errorMessage}</h2> }
           <label
