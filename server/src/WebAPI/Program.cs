@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
 
-    builder.Services.AddSingleton(new LiteDatabase("/app/data/database.db"));
+    if (builder.Environment.IsDevelopment())
+        builder.Services.AddSingleton(new LiteDatabase("database.db"));
+    else
+        builder.Services.AddSingleton(new LiteDatabase("/app/data/database.db"));
 
     builder.Services.AddTransient<IGameReviewRepository, GameReviewRepository>();
     builder.Services.AddTransient<GameReviewService>();

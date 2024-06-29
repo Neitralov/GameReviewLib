@@ -12,9 +12,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var request = new CreateReviewRequest(
             Title: "Minecraft", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 
@@ -52,9 +52,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var request = new CreateReviewRequest(
             Title: "Minecraft", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 
@@ -81,9 +81,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var request1 = new CreateReviewRequest(
             Title: "Minecraft", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: false, 
@@ -93,9 +93,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var request2 = new CreateReviewRequest(
             Title: "Vangers", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 
@@ -113,7 +113,7 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
     }
     
     [Fact] 
-    public async Task UserWillGetAnErrorWhenThereIsMoreThan10ReviewsWithIsBestGameTrue()
+    public async Task UserWillGetAnErrorOnCreateWhenThereIsMoreThan14ReviewsWithIsBestGameTrue()
     {
         var database = fixture.Services.GetService<LiteDatabase>();
         database?.DropCollection(nameof(GameReview));
@@ -122,9 +122,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var request = new CreateReviewRequest(
             Title: "Minecraft", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 
@@ -132,11 +132,71 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
             PosterPath: "/poster");
 
         List<Task> tasks = [];
-        for (var index = 0; index < 10; index++)
+        for (var index = 0; index < 14; index++)
             tasks.Add(client.PostAsJsonAsync("/api/reviews", request));
         await Task.WhenAll(tasks);
         
         var response = await client.PostAsJsonAsync("/api/reviews", request);
+        
+        var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        content?.GetFirstErrorMessage().Should().Be(DomainErrors.GameReview.TooManyBestGames.Description);
+    }
+    
+    [Fact] 
+    public async Task UserWillGetAnErrorOnUpdateWhenThereIsMoreThan14ReviewsWithIsBestGameTrue()
+    {
+        var database = fixture.Services.GetService<LiteDatabase>();
+        database?.DropCollection(nameof(GameReview));
+        var client = fixture.CreateClient();
+        
+        var requestWithBestGame = new CreateReviewRequest(
+            Title: "Minecraft", 
+            ReleaseYear: 2024, 
+            Genre: Genres.Action, 
+            Mode: GameModes.Singleplayer, 
+            Engine: GameEngines.Unity,
+            IsCompleted: true, 
+            Score: 5, 
+            IsBestGame: true, 
+            Comment: "someNote",
+            PosterPath: "/poster");
+        
+        var requestWithoutBestGame = new CreateReviewRequest(
+            Title: "Minecraft", 
+            ReleaseYear: 2024, 
+            Genre: Genres.Action, 
+            Mode: GameModes.Singleplayer, 
+            Engine: GameEngines.Unity,
+            IsCompleted: true, 
+            Score: 5, 
+            IsBestGame: false, 
+            Comment: "someNote",
+            PosterPath: "/poster");
+        
+        
+
+        List<Task> tasks = [];
+        for (var index = 0; index < 14; index++)
+            tasks.Add(client.PostAsJsonAsync("/api/reviews", requestWithBestGame));
+        await Task.WhenAll(tasks);
+        
+        var lastCreateResponse = await client.PostAsJsonAsync("/api/reviews", requestWithoutBestGame);
+        var id = (await lastCreateResponse.Content.ReadFromJsonAsync<ReviewResponse>())!.Id;
+        
+        var updateRequest = new UpdateReviewRequest(
+            Id: id, 
+            Title: "Minecraft", 
+            ReleaseYear: 2024, 
+            Genre: Genres.Action, 
+            Mode: GameModes.Singleplayer, 
+            Engine: GameEngines.Unity,
+            IsCompleted: true, 
+            Score: 5, 
+            IsBestGame: true, 
+            Comment: "someNote",
+            PosterPath: "/poster");
+        
+        var response = await client.PutAsJsonAsync("/api/reviews", updateRequest);
         
         var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         content?.GetFirstErrorMessage().Should().Be(DomainErrors.GameReview.TooManyBestGames.Description);
@@ -152,9 +212,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var createRequest = new CreateReviewRequest(
             Title: "Minecraft", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 
@@ -168,9 +228,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
             Id: id!.Value,
             Title: "Updated", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 
@@ -196,9 +256,9 @@ public class ReviewsControllerTests(CustomWebApplicationFactory fixture) : IClas
         var createRequest = new CreateReviewRequest(
             Title: "Minecraft", 
             ReleaseYear: 2024, 
-            Genre: Genres.ActionRpg, 
+            Genre: Genres.Action, 
             Mode: GameModes.Singleplayer, 
-            Engine: GameEngines.UnityEngine,
+            Engine: GameEngines.Unity,
             IsCompleted: true, 
             Score: 5, 
             IsBestGame: true, 

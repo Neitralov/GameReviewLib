@@ -8,9 +8,9 @@ public class GameReviewServiceTests
         var review = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -33,9 +33,9 @@ public class GameReviewServiceTests
         var review = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -43,7 +43,7 @@ public class GameReviewServiceTests
             posterPath: "/poster");
         
         var mock = new Mock<IGameReviewRepository>();
-        mock.Setup(repository => repository.IsEnoughBestGames().Result).Returns(11 > GameReview.MaxNumberOfTheBestGames);
+        mock.Setup(repository => repository.IsEnoughBestGames().Result).Returns(15 > GameReview.MaxNumberOfTheBestGames);
         var sut = new GameReviewService(mock.Object);
 
         var result = await sut.StoreReview(review.Value);
@@ -58,9 +58,9 @@ public class GameReviewServiceTests
         var review = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -119,9 +119,9 @@ public class GameReviewServiceTests
             id: Guid.Empty, 
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -144,9 +144,9 @@ public class GameReviewServiceTests
             id: Guid.Empty, 
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 

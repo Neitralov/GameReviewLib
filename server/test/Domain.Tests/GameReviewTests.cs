@@ -8,9 +8,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -32,9 +32,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: title, 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -47,16 +47,16 @@ public class GameReviewTests
     }
     
     [Theory]
-    [InlineData(1969)]
+    [InlineData(999)]
     [InlineData(10000)]
     public void CantCreateReviewWithIncorrectYear(int year)
     {
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: year, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -76,7 +76,7 @@ public class GameReviewTests
             releaseYear: 2024, 
             genre: (Genres)int.MaxValue, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -94,9 +94,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: (GameModes)int.MaxValue, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 5, 
             isBestGame: true, 
@@ -114,7 +114,7 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
             engine: (GameEngines)int.MaxValue,
             isCompleted: true, 
@@ -136,9 +136,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: score, 
             isBestGame: false, 
@@ -156,9 +156,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 0, 
             isBestGame: false, 
@@ -176,9 +176,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: false, 
             score: 5, 
             isBestGame: false, 
@@ -196,9 +196,9 @@ public class GameReviewTests
         var sut = GameReview.Create(
             title: "Minecraft", 
             releaseYear: 2024, 
-            genre: Genres.ActionRpg, 
+            genre: Genres.Action, 
             mode: GameModes.Singleplayer, 
-            engine: GameEngines.UnityEngine,
+            engine: GameEngines.Unity,
             isCompleted: true, 
             score: 1, 
             isBestGame: true, 
