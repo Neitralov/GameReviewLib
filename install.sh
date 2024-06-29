@@ -11,7 +11,7 @@ bun run build
 podman build . -t gamereviewlib-client
 
 cd ..
-rm -rf .
+rm -rf *
 
 podman pod create \
 --name gamereviewlib \
