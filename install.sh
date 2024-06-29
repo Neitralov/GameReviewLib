@@ -10,9 +10,6 @@ bun i
 bun run build
 podman build . -t gamereviewlib-client
 
-cd ..
-rm -rf *
-
 podman pod create \
 --name gamereviewlib \
 -p 7431:80 \
