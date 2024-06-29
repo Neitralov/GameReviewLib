@@ -73,7 +73,8 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
       formData.append("file", image)
       const response = await ReviewService.uploadPoster(formData)
       if (response.ok) {
-        setReview(prevState => ({...prevState, posterPath: image.name}))
+        const posterPath = await response.json()
+        setReview(prevState => ({...prevState, posterPath: posterPath}))
       }
     }
   }

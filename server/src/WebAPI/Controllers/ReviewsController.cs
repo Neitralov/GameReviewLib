@@ -102,13 +102,14 @@ public class ReviewsController(GameReviewService reviewService) : ApiController
     }
 
     /// <summary>Загрузить постер в хранилище статических файлов</summary>
-    /// <response code="204">Постер успешно загружен</response>
+    /// <response code="200">Постер успешно загружен</response>
     [HttpPost("upload-poster")]
-    [ProducesResponseType(204)]
+    [ProducesResponseType(200)]
     public async Task<IActionResult> UploadPoster(IFormFile file)
     {
         Directory.CreateDirectory("/app/wwwroot");
-        var posterPath = $"/app/wwwroot/{file.FileName}";
+        var newFileName = $"{Path.GetRandomFileName()}.webp";
+        var posterPath = $"/app/wwwroot/{newFileName}";
         
         try
         {
@@ -126,7 +127,7 @@ public class ReviewsController(GameReviewService reviewService) : ApiController
             return Problem(ex.Message);
         }
         
-        return NoContent();
+        return Ok(newFileName);
     }
     
     private static ErrorOr<GameReview> CreateReviewFrom(CreateReviewRequest request)
