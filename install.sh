@@ -6,12 +6,12 @@ dotnet publish -c Release
 podman build . -t gamereviewlib-webapi
 
 cd ../../../client
+bun i
 bun run build
 podman build . -t gamereviewlib-client
 
 cd ..
 rm -rf .
-mkdir posters database
 
 podman pod create \
 --name gamereviewlib \
@@ -38,6 +38,6 @@ gamereviewlib-client
 
 cd ~/.config/systemd/user
 podman generate systemd --name gamereviewlib -f
-systemctl --user enable container-gamereviewlib.service
+systemctl --user enable pod-gamereviewlib.service
 podman pod stop gamereviewlib
 podman pod start gamereviewlib

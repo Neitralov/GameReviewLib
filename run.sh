@@ -3,6 +3,7 @@ dotnet publish -c Release
 podman build . -t backend-test
 
 cd ../../../client
+bun i
 bun run build
 podman build . -t frontend-test
 
