@@ -15,7 +15,7 @@ public class GameReview
     public string PosterPath { get; private set; } = string.Empty;
     public DateTime Timestamp { get; private set; }
 
-    public const int MaxNumberOfTheBestGames = 10;
+    public const int MaxNumberOfTheBestGames = 14;
     public const int MinNameLength = 3;
     public const int MaxNameLength = 128;
     public const int MinReleaseYear = 1000;

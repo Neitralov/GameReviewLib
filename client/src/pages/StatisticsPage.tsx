@@ -1,7 +1,7 @@
 import {ValueFieldWithHeader} from "../components/ValueFieldWithHeader.tsx";
 import {Details} from "../components/Details.tsx";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import StatisticService from "../api/StatisticService.ts";
 
 export const StatisticsPage = () => {
   const [numberOfCompletedGames, setNumberOfCompletedGames] = useState(0)
@@ -12,38 +12,43 @@ export const StatisticsPage = () => {
   const [ratingOfCompletedGamesByGenre, setRatingOfCompletedGamesByGenre] = useState<{count: number, value: string}[]>([])
   const [ratingOfCompletedGamesByMode, setRatingOfCompletedGamesByMode] = useState<{count: number, value: string}[]>([])
   const [ratingOfCompletedGamesByEngine, setRatingOfCompletedGamesByEngine] = useState<{count: number, value: string}[]>([])
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    fetchStatistics().then(x => x)
+    fetchStatistics().then(() => setIsLoaded(true))
   }, [])
 
   const fetchStatistics = async () => {
-    setNumberOfCompletedGames((await axios.get<number>('http://localhost:8081/api/statistics/number-of-completed-games')).data)
-    setNumberOfPostponedGames((await axios.get<number>('http://localhost:8081/api/statistics/number-of-postponed-games')).data)
-    setLastCompletedGame((await axios.get<string>('http://localhost:8081/api/statistics/last-completed-game')).data)
-    setNewestCompletedGame((await axios.get<string>('http://localhost:8081/api/statistics/newest-completed-game')).data)
-    setOldestCompletedGame((await axios.get<string>('http://localhost:8081/api/statistics/oldest-completed-game')).data)
-    setRatingOfCompletedGamesByGenre((await axios.get<{count: number, value: string}[]>('http://localhost:8081/api/statistics/rating-of-completed-games-by-genre')).data)
-    setRatingOfCompletedGamesByMode((await axios.get<{count: number, value: string}[]>('http://localhost:8081/api/statistics/rating-of-completed-games-by-mode')).data)
-    setRatingOfCompletedGamesByEngine((await axios.get<{count: number, value: string}[]>('http://localhost:8081/api/statistics/rating-of-completed-games-by-engine')).data)
+    setNumberOfCompletedGames(await StatisticService.getNumberOfCompletedGames())
+    setNumberOfPostponedGames(await StatisticService.getNumberOfPostponedGames())
+    setLastCompletedGame(await StatisticService.getLastCompletedGame())
+    setNewestCompletedGame(await StatisticService.getNewestCompletedGame())
+    setOldestCompletedGame(await StatisticService.getOldestCompletedGame())
+    setRatingOfCompletedGamesByGenre(await StatisticService.getRatingOfCompletedGamesByGenre())
+    setRatingOfCompletedGamesByMode(await StatisticService.getRatingOfCompletedGamesByMode())
+    setRatingOfCompletedGamesByEngine(await StatisticService.getRatingOfCompletedGamesByEngine())
   }
 
   return (
     <>
-      <div className={"flex flex-col gap-2"}>
-        <ValueFieldWithHeader header={"Количество пройденных игр"}>{numberOfCompletedGames}</ValueFieldWithHeader>
-        <ValueFieldWithHeader header={"Количество отложенных игр"}>{numberOfPostponedGames}</ValueFieldWithHeader>
-      </div>
+      { isLoaded &&
+          <>
+            <div className={"flex flex-col gap-2"}>
+              <ValueFieldWithHeader header={"Количество пройденных игр"}>{numberOfCompletedGames}</ValueFieldWithHeader>
+              <ValueFieldWithHeader header={"Количество отложенных игр"}>{numberOfPostponedGames}</ValueFieldWithHeader>
+            </div>
 
-      <div className={"flex flex-col gap-2"}>
-        <ValueFieldWithHeader header={"Последняя пройденная игра"}>{lastCompletedGame}</ValueFieldWithHeader>
-        <ValueFieldWithHeader header={"Самая новая пройденная игра"}>{newestCompletedGame}</ValueFieldWithHeader>
-        <ValueFieldWithHeader header={"Самая старая пройденная игра"}>{oldestCompletedGame}</ValueFieldWithHeader>
-      </div>
+            <div className={"flex flex-col gap-2"}>
+              <ValueFieldWithHeader header={"Последняя пройденная игра"}>{lastCompletedGame}</ValueFieldWithHeader>
+              <ValueFieldWithHeader header={"Самая новая пройденная игра"}>{newestCompletedGame}</ValueFieldWithHeader>
+              <ValueFieldWithHeader header={"Самая старая пройденная игра"}>{oldestCompletedGame}</ValueFieldWithHeader>
+            </div>
 
-      <Details header={"Количество пройденных игр по жанрам"} data={ratingOfCompletedGamesByGenre} />
-      <Details header={"Количество пройденных игр по режиму"} data={ratingOfCompletedGamesByMode} />
-      <Details header={"Количество пройденных игр по движку"} data={ratingOfCompletedGamesByEngine} />
+            <Details header={"Количество пройденных игр по жанрам"} data={ratingOfCompletedGamesByGenre} />
+            <Details header={"Количество пройденных игр по режиму"} data={ratingOfCompletedGamesByMode} />
+            <Details header={"Количество пройденных игр по движку"} data={ratingOfCompletedGamesByEngine} />
+          </>
+      }
     </>
   )
 }

@@ -1,8 +1,7 @@
-import {Carousel} from "../components/Carousel.tsx";
-import {GameCard} from "../components/GameCard.tsx";
 import {useEffect, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import ReviewService from "../api/ReviewService.ts";
+import {CardGrid} from "../components/CardGrid.tsx";
 
 export const IndexPage = () => {
   const [reviewsOfBestGames, setReviewsOfBestGames] = useState<IReview[]>([]);
@@ -19,14 +18,21 @@ export const IndexPage = () => {
 
   return (
     <>
-      {isLoaded && reviewsOfBestGames.length == 0 &&
+      { isLoaded && reviewsOfBestGames.length == 0 &&
           <h2>Главная страница выглядит пустоватой :(<br/>Начните добавлять обзоры в библиотеку!</h2>
       }
 
-      {isLoaded && reviewsOfBestGames.length > 0 &&
-          <Carousel header={"🎉 Зал славы - Лучшие игры за все время! 🎉"} isGradientBackground={true}>
-            { reviewsOfBestGames.map(review => <GameCard key={review.id} review={review} onClick={loadReviewToEditor} />)}
-          </Carousel>
+      { isLoaded && reviewsOfBestGames.length > 0 &&
+          <>
+            <h2 className={"w-full text-center text-xl "}>
+              🎉
+              <span className={"underline underline-offset-4 decoration-4 decoration-primary"}>
+                Зал славы - Лучшие игры за все время!
+              </span>
+              🎉
+            </h2>
+            <CardGrid reviews={reviewsOfBestGames} onClick={loadReviewToEditor}/>
+          </>
       }
     </>
   )
