@@ -27,11 +27,11 @@ export const Header: FC<Props> = ({openEditor, loadReviewToEditor}) => {
         <NavLink to={"completed"} className={({isActive}) => isActive ? "text-black" : "text-muted" }>
           <span className={"transition hover:text-black"}>Пройденные</span>
         </NavLink>
-        <span>|</span>
+        <span className={"select-none"}>|</span>
         <NavLink to={"postponed"} className={({isActive}) => isActive ? "text-black" : "text-muted" }>
           <span className={"transition hover:text-black"}>Отложенные</span>
         </NavLink>
-        <span>|</span>
+        <span className={"select-none"}>|</span>
         <NavLink to={"statistics"} className={({isActive}) => isActive ? "text-black" : "text-muted" }>
           <span className={"transition hover:text-black"}>Статистика</span>
         </NavLink>
