@@ -51,9 +51,9 @@ export default class StatisticService {
     }
   }
 
-  static async getRatingOfCompletedGamesByGenre(): Promise<{count: number, value: string}[]> {
+  static async getRatingOfCompletedGamesByGenre(): Promise<{count: number, value: number}[]> {
     try {
-      const response = await httpClient.get<{count: number, value: string}[]>('/statistics/rating-of-completed-games-by-genre')
+      const response = await httpClient.get<{count: number, value: number}[]>('/statistics/rating-of-completed-games-by-genre')
       return response.data
     } catch (e) {
       console.error(e)
@@ -61,9 +61,9 @@ export default class StatisticService {
     }
   }
 
-  static async getRatingOfCompletedGamesByMode(): Promise<{count: number, value: string}[]> {
+  static async getRatingOfCompletedGamesByMode(): Promise<{count: number, value: number}[]> {
     try {
-      const response = await httpClient.get<{count: number, value: string}[]>('/statistics/rating-of-completed-games-by-mode')
+      const response = await httpClient.get<{count: number, value: number}[]>('/statistics/rating-of-completed-games-by-mode')
       return response.data
     } catch (e) {
       console.error(e)
@@ -71,9 +71,9 @@ export default class StatisticService {
     }
   }
 
-  static async getRatingOfCompletedGamesByEngine(): Promise<{count: number, value: string}[]> {
+  static async getRatingOfCompletedGamesByEngine(): Promise<{count: number, value: number}[]> {
     try {
-      const response = await httpClient.get<{count: number, value: string}[]>('/statistics/rating-of-completed-games-by-engine')
+      const response = await httpClient.get<{count: number, value: number}[]>('/statistics/rating-of-completed-games-by-engine')
       return response.data
     } catch (e) {
       console.error(e)

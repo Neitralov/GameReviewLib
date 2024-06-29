@@ -51,7 +51,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
         var rating = reviews
             .FindAll()
             .GroupBy(review => review.Genre)
-            .Select(review => new RatingDto(Count: review.Count(), Value: review.Key.ToString()))
+            .Select(review => new RatingDto(Count: review.Count(), Value: (int)review.Key))
             .OrderByDescending(ratingItem => ratingItem.Count)
             .ToList();
         
@@ -64,7 +64,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
         var rating = reviews
             .FindAll()
             .GroupBy(review => review.Mode)
-            .Select(review => new RatingDto(Count: review.Count(), Value: review.Key.ToString()))
+            .Select(review => new RatingDto(Count: review.Count(), Value: (int)review.Key))
             .OrderByDescending(ratingItem => ratingItem.Count)
             .ToList();
         
@@ -77,7 +77,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
         var rating = reviews
             .FindAll()
             .GroupBy(review => review.Engine)
-            .Select(review => new RatingDto(Count: review.Count(), Value: review.Key.ToString()))
+            .Select(review => new RatingDto(Count: review.Count(), Value: (int)review.Key))
             .OrderByDescending(ratingItem => ratingItem.Count)
             .ToList();
         

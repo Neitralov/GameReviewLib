@@ -2,6 +2,10 @@ import {ValueFieldWithHeader} from "../components/ValueFieldWithHeader.tsx";
 import {Details} from "../components/Details.tsx";
 import {useEffect, useState} from "react";
 import StatisticService from "../api/StatisticService.ts";
+import {BgValueField} from "../ui/value-fields/BgValueField.tsx";
+import {Engines} from "../models/Engines.ts";
+import {Genres} from "../models/Genres.ts";
+import {Modes} from "../models/Modes.ts";
 
 export const StatisticsPage = () => {
   const [numberOfCompletedGames, setNumberOfCompletedGames] = useState(0)
@@ -9,9 +13,9 @@ export const StatisticsPage = () => {
   const [lastCompletedGame, setLastCompletedGame] = useState('')
   const [newestCompletedGame, setNewestCompletedGame] = useState('')
   const [oldestCompletedGame, setOldestCompletedGame] = useState('')
-  const [ratingOfCompletedGamesByGenre, setRatingOfCompletedGamesByGenre] = useState<{count: number, value: string}[]>([])
-  const [ratingOfCompletedGamesByMode, setRatingOfCompletedGamesByMode] = useState<{count: number, value: string}[]>([])
-  const [ratingOfCompletedGamesByEngine, setRatingOfCompletedGamesByEngine] = useState<{count: number, value: string}[]>([])
+  const [ratingOfCompletedGamesByGenre, setRatingOfCompletedGamesByGenre] = useState<{count: number, value: number}[]>([])
+  const [ratingOfCompletedGamesByMode, setRatingOfCompletedGamesByMode] = useState<{count: number, value: number}[]>([])
+  const [ratingOfCompletedGamesByEngine, setRatingOfCompletedGamesByEngine] = useState<{count: number, value: number}[]>([])
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
@@ -44,9 +48,27 @@ export const StatisticsPage = () => {
               <ValueFieldWithHeader header={"Самая старая пройденная игра"}>{oldestCompletedGame}</ValueFieldWithHeader>
             </div>
 
-            <Details header={"Количество пройденных игр по жанрам"} data={ratingOfCompletedGamesByGenre} />
-            <Details header={"Количество пройденных игр по режиму"} data={ratingOfCompletedGamesByMode} />
-            <Details header={"Количество пройденных игр по движку"} data={ratingOfCompletedGamesByEngine} />
+            <Details header={"Количество пройденных игр по жанрам"}>
+              { ratingOfCompletedGamesByGenre.map(item =>
+                <BgValueField key={item.value}>
+                  <span className={"text-base"}>{item.count} - {Genres[item.value].name}</span>
+                </BgValueField>
+              )}
+            </Details>
+            <Details header={"Количество пройденных игр по режиму"}>
+              { ratingOfCompletedGamesByMode.map(item =>
+                <BgValueField key={item.value}>
+                  <span className={"text-base"}>{item.count} - {Modes[item.value].name}</span>
+                </BgValueField>
+              )}
+            </Details>
+            <Details header={"Количество пройденных игр по движку"}>
+              { ratingOfCompletedGamesByEngine.map(item =>
+                <BgValueField key={item.value}>
+                  <span className={"text-base"}>{item.count} - {Engines[item.value].name}</span>
+                </BgValueField>
+              )}
+            </Details>
           </>
       }
     </>
