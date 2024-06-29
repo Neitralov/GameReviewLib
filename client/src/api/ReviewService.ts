@@ -51,7 +51,7 @@ export default class ReviewService {
 
   static async uploadPoster(poster: FormData) : Promise<Response> {
     try {
-      return await fetch('http://localhost:8081/api/reviews/upload-poster', {method: "POST", body: poster});
+      return await fetch('http://localhost:7432/api/reviews/upload-poster', {method: "POST", body: poster});
     } catch (e) {
       console.error(e)
       throw e
