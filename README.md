@@ -11,3 +11,4 @@ curl -L https://raw.githubusercontent.com/Neitralov/GameReviewLib/master/install
 chmod u+x install.sh
 ./install.sh
 ```
+После приложение будет доступно по адресу `http://localhost:7431`.
