@@ -250,7 +250,8 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
           </label>
           <a
             className={"flex justify-center items-center h-fit gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm cursor-pointer select-none"}
-            href={`https://www.steamgriddb.com/search/grids?term=${review.title}`}>
+            href={`https://www.steamgriddb.com/search/grids?term=${review.title}`}
+            target="_blank">
             Искать обложку
           </a>
         </div>
