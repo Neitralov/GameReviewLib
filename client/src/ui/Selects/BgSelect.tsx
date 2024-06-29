@@ -34,7 +34,7 @@ export const BgSelect: FC<Props> = ({header, isStretch, onBlur, getItem, data}) 
       </button>
 
       <div
-        className={`absolute ${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} bg-background mt-2 px-2 py-1.5 shadow rounded z-10`}>
+        className={`absolute ${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} max-h-48 overflow-y-auto bg-background mt-2 px-2 py-1.5 shadow rounded z-10`}>
         { data.map(item =>
           <p key={item.id}
             className={"hover:bg-background-hover text-sm px-2 py-0.5 rounded select-none cursor-pointer"}
