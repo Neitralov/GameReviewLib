@@ -23,8 +23,8 @@ podman run \
 -d \
 --pod gamereviewlib \
 -e ASPNETCORE_ENVIRONMENT=Production \
--v ./posters:/app/wwwroot:Z \
--v ./database:/app/data:Z \
+-v gamereviewlib-posters:/app/wwwroot:Z \
+-v gamereviewlib-database:/app/data:Z \
 --name gamereviewlib-webapi \
 --replace \
 gamereviewlib-webapi
