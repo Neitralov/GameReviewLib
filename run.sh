@@ -8,15 +8,14 @@ podman build . -t frontend-test
 
 podman pod create \
 --name gamereviewlib \
--p 8080:80 \
--p 8081:8080 \
+-p 7431:80 \
+-p 7432:8080 \
 --replace
 
 podman run \
 -d \
 --pod gamereviewlib \
 -e ASPNETCORE_ENVIRONMENT=Development \
--e FrontendUrl="http://localhost:8080" \
 -v gamereviewlib-backend-volume-posters:/app/wwwroot:Z \
 -v gamereviewlib-backend-volume-database:/app/data:Z \
 --name gamereviewlib-backend \
@@ -26,7 +25,6 @@ backend-test
 podman run \
 -d \
 --pod gamereviewlib \
--e ENVIRONMENT=Development \
 --name gamereviewlib-frontend \
 --replace \
 frontend-test

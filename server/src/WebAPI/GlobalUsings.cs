@@ -7,6 +7,7 @@ global using System.ComponentModel.DataAnnotations;
 global using LiteDB;
 global using ErrorOr;
 global using Mapster;
+global using SkiaSharp;
 
 global using Database.Repositories;
 

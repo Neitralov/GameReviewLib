@@ -2,9 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddCors(
         options => options.AddPolicy("AllowGameReviewLib", policy =>
-            policy.WithOrigins(builder.Configuration["FrontendUrl"] ?? throw new NullReferenceException("env variable FrontendUrl is not defined"))
-                .AllowAnyHeader()
-                .AllowAnyMethod()));
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
     
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();

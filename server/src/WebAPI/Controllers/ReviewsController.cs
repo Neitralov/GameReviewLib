@@ -108,9 +108,23 @@ public class ReviewsController(GameReviewService reviewService) : ApiController
     public async Task<IActionResult> UploadPoster(IFormFile file)
     {
         Directory.CreateDirectory("/app/wwwroot");
+        var posterPath = $"/app/wwwroot/{file.FileName}";
         
-        await using var fileStream = new FileStream($"/app/wwwroot/{file.FileName}", FileMode.Create);
-        await file.CopyToAsync(fileStream);
+        try
+        {
+            await using var fileStream = new FileStream(posterPath, FileMode.Create);
+            await file.CopyToAsync(fileStream);
+
+            await using var readStream = new FileStream(posterPath, FileMode.Open);
+            var webp = SKBitmap.Decode(readStream).Encode(SKEncodedImageFormat.Webp, 80);
+
+            await using var writeStream = new FileStream(posterPath, FileMode.Create);
+            webp.SaveTo(writeStream);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
         
         return NoContent();
     }

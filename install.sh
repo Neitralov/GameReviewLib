@@ -1,0 +1,43 @@
+git clone https://github.com/Neitralov/GameReviewLib.git
+cd GameReviewLib
+
+cd server/src/WebAPI
+dotnet publish -c Release
+podman build . -t gamereviewlib-webapi
+
+cd ../../../client
+bun run build
+podman build . -t gamereviewlib-client
+
+cd ..
+rm -rf .
+mkdir posters database
+
+podman pod create \
+--name gamereviewlib \
+-p 7431:80 \
+-p 7432:8080 \
+--replace
+
+podman run \
+-d \
+--pod gamereviewlib \
+-e ASPNETCORE_ENVIRONMENT=Production \
+-v ./posters:/app/wwwroot:Z \
+-v ./database:/app/data:Z \
+--name gamereviewlib-webapi \
+--replace \
+gamereviewlib-webapi
+
+podman run \
+-d \
+--pod gamereviewlib \
+--name gamereviewlib-client \
+--replace \
+gamereviewlib-client
+
+cd ~/.config/systemd/user
+podman generate systemd --name gamereviewlib -f
+systemctl --user enable container-gamereviewlib.service
+podman pod stop gamereviewlib
+podman pod start gamereviewlib
