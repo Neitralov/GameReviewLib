@@ -21,6 +21,10 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
     public Task<string> GetLastCompletedGame()
     {
         var reviews = database.GetCollection<GameReview>();
+        
+        if (!reviews.Exists(reviwew => reviwew.IsCompleted)) 
+            return Task.FromResult("N/A");
+        
         var newestTimestamp = reviews.Find(reviwew => reviwew.IsCompleted).Max(review => review.Timestamp);
         var review = reviews.FindOne(review => review.Timestamp == newestTimestamp);
 
@@ -30,16 +34,24 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
     public Task<string> GetNewestCompletedGame()
     {
         var reviews = database.GetCollection<GameReview>();
-        var maxReleaseYear = reviews.Max(review => review.ReleaseYear);
-        var review = reviews.FindOne(review => review.ReleaseYear == maxReleaseYear);
         
+        if (!reviews.Exists(reviwew => reviwew.IsCompleted)) 
+            return Task.FromResult("N/A");
+        
+        var maxReleaseYear = reviews.Find(reviwew => reviwew.IsCompleted).Max(review => review.ReleaseYear);
+        var review = reviews.FindOne(review => review.ReleaseYear == maxReleaseYear);
+
         return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
 
     public Task<string> GetOldestCompletedGame()
     {
         var reviews = database.GetCollection<GameReview>();
-        var minReleaseYear = reviews.Min(review => review.ReleaseYear);
+        
+        if (!reviews.Exists(reviwew => reviwew.IsCompleted)) 
+            return Task.FromResult("N/A");
+        
+        var minReleaseYear = reviews.Find(reviwew => reviwew.IsCompleted).Min(review => review.ReleaseYear);
         var review = reviews.FindOne(review => review.ReleaseYear == minReleaseYear);
         
         return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
