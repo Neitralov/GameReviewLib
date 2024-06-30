@@ -30,7 +30,7 @@ export const App = () => {
     <ReviewsContext.Provider value={{reviews, setReviews, isReviewsLoaded}}>
       <div className={"flex flex-col min-h-screen bg-background"}>
         <Header openEditor={() => setIsEditorOpen(true)} loadReviewToEditor={loadReviewToEditor} />
-        <div className={"overflow-y-scroll h-[calc(100vh-120px)]"}>
+        <div className={"overflow-y-scroll h-[calc(100vh-120px)]"} style={{scrollbarGutter: "stable both-edges"}}>
           <main className={"flex flex-col xl:container w-full xl:gap-5 gap-4 xl:pt-5 pt-4 xl:px-[50px] px-4 pb-5"}>
             <Outlet context={[loadReviewToEditor]}/>
           </main>

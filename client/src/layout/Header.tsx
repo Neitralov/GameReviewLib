@@ -13,7 +13,7 @@ export const Header: FC<Props> = ({openEditor, loadReviewToEditor}) => {
   const {reviews} = useContext(ReviewsContext)
 
   return (
-    <header className={"sticky top-0 flex flex-col gap-4 overflow-hidden bg-neutral xl:py-5 py-4 shadow-sm z-40"} style={{scrollbarGutter: "stable"}}>
+    <header className={"sticky top-0 flex flex-col gap-4 bg-neutral xl:py-5 py-4 shadow-sm z-40"}>
 
       <div className={"flex xl:container w-full items-center xl:gap-5 gap-4 xl:px-[50px] px-4"}>
         <NavLink to={"/"} className={"xl:text-3xl text-2xl"}>GameReviewLib</NavLink>
