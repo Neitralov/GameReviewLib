@@ -107,9 +107,9 @@ public class ReviewsController(GameReviewService reviewService) : ApiController
     [ProducesResponseType(200)]
     public async Task<IActionResult> UploadPoster(IFormFile file)
     {
-        Directory.CreateDirectory("/app/wwwroot");
+        Directory.CreateDirectory("/app/wwwroot/posters");
         var newFileName = $"{Path.GetRandomFileName()}.webp";
-        var posterPath = $"/app/wwwroot/{newFileName}";
+        var posterPath = $"/app/wwwroot/posters/{newFileName}";
         
         try
         {

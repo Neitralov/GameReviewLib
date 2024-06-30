@@ -7,10 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
 
-    if (builder.Environment.IsDevelopment())
-        builder.Services.AddSingleton(new LiteDatabase("database.db"));
-    else
-        builder.Services.AddSingleton(new LiteDatabase("/app/data/database.db"));
+    builder.Services.AddSingleton(builder.Environment.IsDevelopment()
+        ? new LiteDatabase("database.db")
+        : new LiteDatabase("/app/data/database.db"));
 
     builder.Services.AddTransient<IGameReviewRepository, GameReviewRepository>();
     builder.Services.AddTransient<GameReviewService>();
@@ -43,7 +42,7 @@ var app = builder.Build();
     
     app.UseHttpsRedirection();
     app.UseCors("AllowGameReviewLib");
-    app.UseStaticFiles();
+    app.UseFileServer();
     app.MapControllers();
     app.Run();
 }

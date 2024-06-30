@@ -1,31 +1,18 @@
-cd server/src/WebAPI
-dotnet publish -c Release
-podman build . -t backend-test
-
-cd ../../../client
-bun i
+cd client
+bun install
 bun run build
-podman build . -t frontend-test
+cp -rfT ./dist ../server/src/WebAPI/wwwroot
 
-podman pod create \
---name gamereviewlib \
--p 7431:80 \
+cd ../server/src/WebAPI
+dotnet publish -c Release
+podman build . -t gamereviewlib-dev
+
+podman run \
+-d \
 -p 7432:8080 \
---replace
-
-podman run \
--d \
---pod gamereviewlib \
 -e ASPNETCORE_ENVIRONMENT=Development \
--v gamereviewlib-backend-volume-posters:/app/wwwroot:Z \
--v gamereviewlib-backend-volume-database:/app/data:Z \
---name gamereviewlib-backend \
+-v gamereviewlib-posters-dev:/app/wwwroot/posters:Z \
+-v gamereviewlib-database-dev:/app/data:Z \
+--name gamereviewlib-dev \
 --replace \
-backend-test
-
-podman run \
--d \
---pod gamereviewlib \
---name gamereviewlib-frontend \
---replace \
-frontend-test
+gamereviewlib-dev
