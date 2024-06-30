@@ -240,7 +240,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
               className={"flex justify-center items-center min-w-[180px] w-[180px] h-[270px] text-sm bg-background rounded-lg"}>
               Обложка отсутствует
             </div>
-            : <Preview imageUrl={`http://localhost:7432/${review.posterPath}`}/>
+            : <Preview imageUrl={`http://localhost:7432/posters/${review.posterPath}`}/>
           }
           { (posterValidator.isDirty && posterValidator.errorMessage) && <h2 className={"text-danger text-center"}>{posterValidator.errorMessage}</h2> }
           <label
