@@ -124,7 +124,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
       return
     }
 
-    if (review.isBestGame && reviews.filter(review => review.isBestGame).length == 10) {
+    if (review.isBestGame && reviews.filter(review => review.isBestGame).length == 14) {
       alert("Нельзя поместить в зал славы более 14 игр")
       return
     }
