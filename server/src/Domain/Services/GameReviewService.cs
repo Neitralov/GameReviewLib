@@ -29,11 +29,17 @@ public class GameReviewService(IGameReviewRepository repository)
 
     public async Task<ErrorOr<Updated>> UpdateReview(GameReview review)
     {
-        if (review.IsBestGame && await repository.IsEnoughBestGames())
+        var updatingValue = await repository.FindReviewById(review.Id);
+        
+        if (updatingValue is null)
+            return DomainErrors.GameReview.NotFound;
+        
+        if (!updatingValue.IsBestGame && review.IsBestGame && await repository.IsEnoughBestGames())
             return DomainErrors.GameReview.TooManyBestGames;
         
-        var result = await repository.UpdateReview(review);
-        return result ? Result.Updated : DomainErrors.GameReview.NotFound;
+        await repository.UpdateReview(review);
+        
+        return Result.Updated;
     }
 
     public async Task<ErrorOr<Deleted>> RemoveReview(Guid reviewId)
