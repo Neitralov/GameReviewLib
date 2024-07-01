@@ -99,7 +99,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
 
   const onReleaseYearChange = (value: string) => {
     const regex = /[0-9]/;
-    if (regex.test(value[value.length - 1])) {
+    if (regex.test(value[value.length - 1]) && value.length <= 4) {
       return value
     } else {
       return value.slice(0, value.length - 1)
