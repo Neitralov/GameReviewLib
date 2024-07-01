@@ -18,7 +18,7 @@ public enum Genres
     Hypercasual,
     InteractiveMovie,
     JRPG,
-    ExtractionShooter,
+    LooterShooter,
     MMORPG,
     MOBA,
     Platformer,
