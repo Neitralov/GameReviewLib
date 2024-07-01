@@ -7,9 +7,9 @@ export const useSortedReviews = (reviews: IReview[], sort: number) => {
     } else if (sort === 2) {
       return [...reviews].sort((a, b) => a.score - b.score)
     } else if (sort === 3) {
-      return [...reviews].sort((a, b) => b.releaseYear.localeCompare(a.releaseYear))
+      return [...reviews].sort((a, b) => Number(b.releaseYear) - Number(a.releaseYear))
     } else if (sort === 4) {
-      return [...reviews].sort((a, b) => a.releaseYear.localeCompare(b.releaseYear))
+      return [...reviews].sort((a, b) => Number(a.releaseYear) - Number(b.releaseYear))
     } else {
       return reviews
     }
