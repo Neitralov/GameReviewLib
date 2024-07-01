@@ -6,6 +6,10 @@ export const useSortedReviews = (reviews: IReview[], sort: number) => {
       return [...reviews].sort((a, b) => b.score - a.score)
     } else if (sort === 2) {
       return [...reviews].sort((a, b) => a.score - b.score)
+    } else if (sort === 3) {
+      return [...reviews].sort((a, b) => b.releaseYear.localeCompare(a.releaseYear))
+    } else if (sort === 4) {
+      return [...reviews].sort((a, b) => a.releaseYear.localeCompare(b.releaseYear))
     } else {
       return reviews
     }
