@@ -25,7 +25,7 @@ export const BgSelect: FC<Props> = ({header, isStretch, onBlur, getItem, data}) 
   return (
     <div className={`${isStretch ? "relative" : ""}`}>
       <button
-        className={`${isStretch ? "w-full justify-between" : ""} flex items-center gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm select-none`}
+        className={`${isStretch ? "w-full justify-between" : ""} flex items-center gap-0.5 bg-background hover:bg-background-hover text-sm px-3 py-1.5 rounded shadow-sm select-none outline-primary`}
         type={"button"}
         onClick={() => setIsOpen(!isOpen)}
         onBlur={onBlurHandler}>

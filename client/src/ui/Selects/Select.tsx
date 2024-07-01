@@ -19,7 +19,7 @@ export const Select: FC<Props> = ({header, isStretch, getItem, data}) => {
   return (
     <div className={`${isStretch ? "relative" : ""}`}>
       <button
-        className={`${isStretch ? "w-full justify-between" : ""} flex items-center gap-0.5 bg-neutral hover:bg-neutral-hover text-sm px-3 py-1.5 rounded shadow-sm select-none`}
+        className={`${isStretch ? "w-full justify-between" : ""} flex items-center gap-0.5 bg-neutral hover:bg-neutral-hover text-sm px-3 py-1.5 rounded shadow-sm select-none outline-primary`}
         type={"button"}
         onClick={() => setIsOpen(!isOpen)}
         onBlur={() => setIsOpen(false)}>
