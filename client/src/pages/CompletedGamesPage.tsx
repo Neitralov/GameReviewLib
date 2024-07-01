@@ -29,10 +29,26 @@ export const CompletedGamesPage = () => {
       <div className={"flex flex-col gap-2"}>
         <div className={"flex justify-between"}>
           <div className={"flex gap-2"}>
-            <Select header={"Сортировка"} isStretch={false} getItem={setSort} data={Sorts} />
-            <Select header={"Жанр"} isStretch={false} getItem={(genre) => setFilters({...filters, genre: genre})} data={Genres} />
-            <Select header={"Режим"} isStretch={false} getItem={(mode) => setFilters({...filters, mode: mode})} data={Modes} />
-            <Select header={"Движок"} isStretch={false} getItem={(engine) => setFilters({...filters, engine: engine})} data={Engines} />
+            <Select
+              header={"Сортировка"}
+              isStretch={false}
+              getItem={setSort}
+              data={Sorts} />
+            <Select
+              header={"Жанр"}
+              isStretch={false}
+              getItem={(genre) => setFilters({...filters, genre: genre})}
+              data={Genres.sort((a, b) => a.name.localeCompare(b.name))} />
+            <Select
+              header={"Режим"}
+              isStretch={false}
+              getItem={(mode) => setFilters({...filters, mode: mode})}
+              data={Modes} />
+            <Select
+              header={"Движок"}
+              isStretch={false}
+              getItem={(engine) => setFilters({...filters, engine: engine})}
+              data={Engines.sort((a, b) => a.name.localeCompare(b.name))} />
           </div>
 
           <div>

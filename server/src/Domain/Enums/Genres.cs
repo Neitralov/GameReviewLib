@@ -3,11 +3,11 @@ namespace Domain.Enums;
 public enum Genres
 {
     None,
-    FourX,
+    Slasher,
     Action,
     ActionRPG,
     Adventure,
-    ArenaShooter,
+    Arcade,
     BattleRoyale,
     BeatEmUp,
     Clicker,
@@ -18,7 +18,7 @@ public enum Genres
     Hypercasual,
     InteractiveMovie,
     JRPG,
-    LooterShooter,
+    ExtractionShooter,
     MMORPG,
     MOBA,
     Platformer,
@@ -38,5 +38,9 @@ public enum Genres
     SurvivalHorror,
     TopDownShooter,
     TowerDefense,
-    TBS
+    TBS,
+    VisualNovel,
+    IsometricShooter,
+    SoulsLike,
+    CardGame
 }

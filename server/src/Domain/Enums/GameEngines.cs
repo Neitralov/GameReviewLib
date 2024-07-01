@@ -37,5 +37,20 @@ public enum GameEngines
     Unity,
     UnrealEngine,
     XRay,
-    XNA
+    XNA,
+    IllusionEngine,
+    EGO,
+    Prism3D,
+    GIANTSEngine,
+    LiquidEngine,
+    Box2D,
+    EAGL,
+    REEngine,
+    DuniaEngine,
+    ChromeEngine,
+    PhyreEngine,
+    TelltaleTool,
+    HTML5andFlash,
+    ApexEngine,
+    GZDoom
 }

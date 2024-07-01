@@ -278,7 +278,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
             error={(genreValidator.isDirty && genreValidator.isError) ? genreValidator.errorMessage : ''}
             onBlur={() => null}
             getItem={(value) => setReview(prevState => ({...prevState, genre: value}))}
-            data={Genres.filter(genre => genre.id != 0)} />
+            data={Genres.filter(genre => genre.id != 0).sort((a, b) => a.name.localeCompare(b.name))} />
           <div className={"flex gap-3"}>
             <BgSelectWithHeader
               header={"Режим"}
@@ -293,7 +293,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
               error={(engineValidator.isDirty && engineValidator.isError) ? engineValidator.errorMessage : ''}
               onBlur={() => null}
               getItem={(value) => setReview(prevState => ({...prevState, engine: value}))}
-              data={Engines.filter(engine => engine.id != 0)} />
+              data={Engines.filter(engine => engine.id != 0).sort((a, b) => a.name.localeCompare(b.name))} />
           </div>
           <CheckBoxWithHeader
             header={"Статус"}
