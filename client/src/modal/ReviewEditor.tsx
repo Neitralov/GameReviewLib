@@ -274,7 +274,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
             onChange={(e) => setReview(prevState => ({...prevState, releaseYear: onReleaseYearChange(e.target.value)}))} />
           <BgSelectWithHeader
             header={"Жанр"}
-            selectHeader={Genres[review.genre].name}
+            selectHeader={Genres.sort((a, b) => a.name.localeCompare(b.name))[review.genre].name}
             error={(genreValidator.isDirty && genreValidator.isError) ? genreValidator.errorMessage : ''}
             onBlur={() => null}
             getItem={(value) => setReview(prevState => ({...prevState, genre: value}))}
@@ -289,7 +289,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
               data={Modes.filter(mode => mode.id != 0)} />
             <BgSelectWithHeader
               header={"Движок"}
-              selectHeader={Engines[review.engine].name}
+              selectHeader={Engines.sort((a, b) => a.name.localeCompare(b.name))[review.engine].name}
               error={(engineValidator.isDirty && engineValidator.isError) ? engineValidator.errorMessage : ''}
               onBlur={() => null}
               getItem={(value) => setReview(prevState => ({...prevState, engine: value}))}

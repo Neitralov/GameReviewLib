@@ -64,13 +64,13 @@ export const PostponedGamesPage = () => {
               <Tag>{Sorts[sort].name}</Tag>
           }
           { filters.genre != 0 &&
-              <Tag>{Genres[filters.genre].name}</Tag>
+              <Tag>{Genres.sort((a, b) => a.name.localeCompare(b.name))[filters.genre].name}</Tag>
           }
           { filters.mode != 0 &&
               <Tag>{Modes[filters.mode].name}</Tag>
           }
           { filters.engine != 0 &&
-              <Tag>{Engines[filters.engine].name}</Tag>
+              <Tag>{Engines.sort((a, b) => a.name.localeCompare(b.name))[filters.engine].name}</Tag>
           }
         </div>
 
