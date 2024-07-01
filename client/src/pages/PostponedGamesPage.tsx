@@ -33,7 +33,7 @@ export const PostponedGamesPage = () => {
               header={"Сортировка"}
               isStretch={false}
               getItem={setSort}
-              data={Sorts.filter(sort => sort.id == 1 || sort.id == 2)} />
+              data={Sorts.filter(sort => sort.id != 1 && sort.id != 2)} />
             <Select
               header={"Жанр"}
               isStretch={false}
@@ -48,7 +48,7 @@ export const PostponedGamesPage = () => {
               header={"Движок"}
               isStretch={false}
               getItem={(engine) => setFilters({...filters, engine: engine})}
-              data={Engines.sort((a, b) => a.name.localeCompare(b.name))} />
+              data={[Engines[0], ...Engines.filter(engine => engine.id == 0).sort((a, b) => a.name.localeCompare(b.name))]} />
           </div>
 
           <div>
