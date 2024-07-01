@@ -274,7 +274,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
             onChange={(e) => setReview(prevState => ({...prevState, releaseYear: onReleaseYearChange(e.target.value)}))} />
           <BgSelectWithHeader
             header={"Жанр"}
-            selectHeader={Genres.sort((a, b) => a.name.localeCompare(b.name))[review.genre].name}
+            selectHeader={Genres.find(item => item.id == review.genre)!.name}
             error={(genreValidator.isDirty && genreValidator.isError) ? genreValidator.errorMessage : ''}
             onBlur={() => null}
             getItem={(value) => setReview(prevState => ({...prevState, genre: value}))}
@@ -289,11 +289,11 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
               data={Modes.filter(mode => mode.id != 0)} />
             <BgSelectWithHeader
               header={"Движок"}
-              selectHeader={Engines.sort((a, b) => a.name.localeCompare(b.name))[review.engine].name}
+              selectHeader={Engines.find(item => item.id == review.engine)!.name}
               error={(engineValidator.isDirty && engineValidator.isError) ? engineValidator.errorMessage : ''}
               onBlur={() => null}
               getItem={(value) => setReview(prevState => ({...prevState, engine: value}))}
-              data={Engines.filter(engine => engine.id != 0).sort((a, b) => a.name.localeCompare(b.name))} />
+              data={[Engines[1], ...Engines.slice(2, Engines.length - 1).sort((a, b) => a.name.localeCompare(b.name))]} />
           </div>
           <CheckBoxWithHeader
             header={"Статус"}

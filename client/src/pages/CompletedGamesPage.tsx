@@ -48,7 +48,7 @@ export const CompletedGamesPage = () => {
               header={"Движок"}
               isStretch={false}
               getItem={(engine) => setFilters({...filters, engine: engine})}
-              data={[Engines[0], ...Engines.filter(engine => engine.id == 0).sort((a, b) => a.name.localeCompare(b.name))]} />
+              data={[Engines[0], Engines[1], ...Engines.slice(2, Engines.length - 1).sort((a, b) => a.name.localeCompare(b.name))]} />
           </div>
 
           <div>
@@ -64,13 +64,13 @@ export const CompletedGamesPage = () => {
             <Tag>{Sorts[sort].name}</Tag>
           }
           { filters.genre != 0 &&
-            <Tag>{Genres.sort((a, b) => a.name.localeCompare(b.name))[filters.genre].name}</Tag>
+            <Tag>{Genres.find(item => item.id == filters.genre)!.name}</Tag>
           }
           { filters.mode != 0 &&
             <Tag>{Modes[filters.mode].name}</Tag>
           }
           { filters.engine != 0 &&
-            <Tag>{Engines.sort((a, b) => a.name.localeCompare(b.name))[filters.engine].name}</Tag>
+            <Tag>{Engines.find(item => item.id == filters.engine)!.name}</Tag>
           }
         </div>
 
