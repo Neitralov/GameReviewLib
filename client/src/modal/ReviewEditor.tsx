@@ -293,7 +293,7 @@ export const ReviewEditor: FC<Props> = ({setIsModalOpen, review, setReview}) => 
               error={(engineValidator.isDirty && engineValidator.isError) ? engineValidator.errorMessage : ''}
               onBlur={() => null}
               getItem={(value) => setReview(prevState => ({...prevState, engine: value}))}
-              data={[Engines[1], ...Engines.slice(2, Engines.length - 1).sort((a, b) => a.name.localeCompare(b.name))]} />
+              data={[Engines[1], ...Engines.slice(2, Engines.length).sort((a, b) => a.name.localeCompare(b.name))]} />
           </div>
           <CheckBoxWithHeader
             header={"Статус"}

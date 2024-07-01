@@ -48,7 +48,7 @@ export const CompletedGamesPage = () => {
               header={"Движок"}
               isStretch={false}
               getItem={(engine) => setFilters({...filters, engine: engine})}
-              data={[Engines[0], Engines[1], ...Engines.slice(2, Engines.length - 1).sort((a, b) => a.name.localeCompare(b.name))]} />
+              data={[Engines[0], Engines[1], ...Engines.slice(2, Engines.length).sort((a, b) => a.name.localeCompare(b.name))]} />
           </div>
 
           <div>
