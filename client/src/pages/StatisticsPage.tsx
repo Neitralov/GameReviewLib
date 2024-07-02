@@ -51,7 +51,7 @@ export const StatisticsPage = () => {
             <Details header={"Количество пройденных игр по жанрам"}>
               { ratingOfCompletedGamesByGenre.map(item =>
                 <BgValueField key={item.value}>
-                  <span className={"text-base"}>{item.count} - {Genres[item.value].name}</span>
+                  <span className={"text-base"}>{item.count} - {Genres.find(genre => genre.id == item.value)!.name}</span>
                 </BgValueField>
               )}
             </Details>
@@ -65,7 +65,7 @@ export const StatisticsPage = () => {
             <Details header={"Количество пройденных игр по движку"}>
               { ratingOfCompletedGamesByEngine.map(item =>
                 <BgValueField key={item.value}>
-                  <span className={"text-base"}>{item.count} - {Engines[item.value].name}</span>
+                  <span className={"text-base"}>{item.count} - {Engines.find(engine => engine.id == item.value)!.name}</span>
                 </BgValueField>
               )}
             </Details>
