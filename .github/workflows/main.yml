@@ -6,9 +6,6 @@ jobs:
     steps:
       - name: Get Repository Code
         uses: actions/checkout@v3
-      - name: Enter Into Server Dir
-        run: cd server
-      - name: Where am I
-        run: ls
       - name: Run Tests
-        run: dotnet test ./GameReviewLib.sln
+        working-directory: ./server
+        run: dotnet test
