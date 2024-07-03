@@ -47,7 +47,7 @@ public class GameReviewTests
     }
     
     [Theory]
-    [InlineData(999)]
+    [InlineData(9999)]
     [InlineData(10000)]
     public void CantCreateReviewWithIncorrectYear(int year)
     {
