@@ -7,6 +7,6 @@ jobs:
       - name: Get Repository Code
         uses: actions/checkout@v3
       - name: Install .NET Core SDK
-        uses: actions/setup-dotnet@4.0.0
+        uses: actions/setup-dotnet@v4.0.0
       - name: Run Tests
         run: dotnet test
