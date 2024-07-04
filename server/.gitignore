@@ -2,6 +2,3 @@ bin
 obj
 **/*.db
 **/*.DotSettings.user
-.fleet
-.visualstudio
-.qweqwe
