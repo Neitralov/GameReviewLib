@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, reopened, edited]
+    branches: 'master'
     paths: 'server/**/*'
 jobs:
   tests:
