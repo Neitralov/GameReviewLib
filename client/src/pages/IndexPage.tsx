@@ -20,7 +20,7 @@ export const IndexPage = () => {
     <>
       <h2 className={"w-full text-center text-xl "}>
         🎉
-        <span className={"underline underline-offset-4 decoration-4 decoration-primary"}>
+        <span className={"underline underline-offset-4 decoration-4 decoration-primary"} style={{textDecorationSkipInk: "none"}}>
           Зал славы - Лучшие игры за все время!
         </span>
         🎉
