@@ -65,7 +65,7 @@ export const PostponedGamesPage = () => {
               <Tag>{Sorts[sort].name}</Tag>
             }
             { filters.genre != 0 &&
-              <Tag>{Genres.find(item => item.id == filters.engine)!.name}</Tag>
+              <Tag>{Genres.find(item => item.id == filters.genre)!.name}</Tag>
             }
             { filters.mode != 0 &&
               <Tag>{Modes[filters.mode].name}</Tag>
