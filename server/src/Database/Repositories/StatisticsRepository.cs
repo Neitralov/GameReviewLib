@@ -26,7 +26,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
             return Task.FromResult("N/A");
         
         var newestTimestamp = reviews.Find(reviwew => reviwew.IsCompleted).Max(review => review.Timestamp);
-        var review = reviews.FindOne(review => review.Timestamp == newestTimestamp);
+        var review = reviews.FindOne(review => review.IsCompleted && review.Timestamp == newestTimestamp);
 
         return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
@@ -39,7 +39,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
             return Task.FromResult("N/A");
         
         var maxReleaseYear = reviews.Find(reviwew => reviwew.IsCompleted).Max(review => review.ReleaseYear);
-        var review = reviews.FindOne(review => review.ReleaseYear == maxReleaseYear);
+        var review = reviews.FindOne(review => review.IsCompleted && review.ReleaseYear == maxReleaseYear);
 
         return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
@@ -52,7 +52,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
             return Task.FromResult("N/A");
         
         var minReleaseYear = reviews.Find(reviwew => reviwew.IsCompleted).Min(review => review.ReleaseYear);
-        var review = reviews.FindOne(review => review.ReleaseYear == minReleaseYear);
+        var review = reviews.FindOne(review => review.IsCompleted && review.ReleaseYear == minReleaseYear);
         
         return Task.FromResult($"{review.Title} ({review.ReleaseYear})");
     }
@@ -61,7 +61,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
     {
         var reviews = database.GetCollection<GameReview>();
         var rating = reviews
-            .FindAll()
+            .Find(review => review.IsCompleted)
             .GroupBy(review => review.Genre)
             .Select(review => new RatingDto(Count: review.Count(), Value: (int)review.Key))
             .OrderByDescending(ratingItem => ratingItem.Count)
@@ -74,7 +74,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
     {
         var reviews = database.GetCollection<GameReview>();
         var rating = reviews
-            .FindAll()
+            .Find(review => review.IsCompleted)
             .GroupBy(review => review.Mode)
             .Select(review => new RatingDto(Count: review.Count(), Value: (int)review.Key))
             .OrderByDescending(ratingItem => ratingItem.Count)
@@ -87,7 +87,7 @@ public class StatisticsRepository(LiteDatabase database) : IStatisticsRepository
     {
         var reviews = database.GetCollection<GameReview>();
         var rating = reviews
-            .FindAll()
+            .Find(review => review.IsCompleted)
             .GroupBy(review => review.Engine)
             .Select(review => new RatingDto(Count: review.Count(), Value: (int)review.Key))
             .OrderByDescending(ratingItem => ratingItem.Count)
