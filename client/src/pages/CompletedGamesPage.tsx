@@ -58,21 +58,23 @@ export const CompletedGamesPage = () => {
             </Button>
           </div>
         </div>
-
-        <div className={"flex gap-2"}>
-          { sort != 0 &&
-            <Tag>{Sorts[sort].name}</Tag>
-          }
-          { filters.genre != 0 &&
+ 
+        { (sort != 0 || filters.genre != 0 || filters.mode != 0 || filters.engine != 0) &&
+          <div className={"flex gap-2"}>
+            { sort != 0 &&
+              <Tag>{Sorts[sort].name}</Tag>
+            }
+            { filters.genre != 0 &&
             <Tag>{Genres.find(item => item.id == filters.genre)!.name}</Tag>
-          }
-          { filters.mode != 0 &&
+            }
+            { filters.mode != 0 &&
             <Tag>{Modes[filters.mode].name}</Tag>
-          }
-          { filters.engine != 0 &&
+            }
+            { filters.engine != 0 &&
             <Tag>{Engines.find(item => item.id == filters.engine)!.name}</Tag>
-          }
-        </div>
+            }
+          </div>
+        }
 
       </div>
 
