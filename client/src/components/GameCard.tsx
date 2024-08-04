@@ -11,7 +11,8 @@ export const GameCard:FC<Props> = ({review, onClick}) => {
     <div
       className={"flex flex-col-reverse min-w-[150px] w-[150px] h-[225px] px-3 py-1.5 bg-cover bg-center border-solid border-2 border-gray-300 shadow-[inset_0_-40px_12px_-12px_rgba(0,0,0,35%)] rounded-lg cursor-pointer snap-start"}
       style={{backgroundImage: `url('http://localhost:7432/posters/${review.posterPath}')`}}
-      onClick={() => onClick(review)}>
+      onClick={() => onClick(review)}
+      title={review.title}>
       <div className={"flex justify-between"}>
         <p className={"text-sm text-white select-none"}>{review.releaseYear}</p>
         <div className={"flex items-center gap-[1px]"}>
