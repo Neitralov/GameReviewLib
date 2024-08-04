@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
 
+    builder.Services.AddResponseCompression();
+
     builder.Services.AddSingleton(builder.Environment.IsDevelopment()
         ? new LiteDatabase("database.db")
         : new LiteDatabase("/app/data/database.db"));
@@ -39,8 +41,8 @@ var app = builder.Build();
     {
         app.UseExceptionHandler("/error");
     }
-    
-    app.UseHttpsRedirection();
+
+    app.UseResponseCompression();
     app.UseCors("AllowGameReviewLib");
     app.UseFileServer();
     app.MapControllers();
