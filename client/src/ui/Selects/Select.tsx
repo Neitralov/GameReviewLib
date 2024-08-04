@@ -17,7 +17,7 @@ export const Select: FC<Props> = ({header, isStretch, getItem, data}) => {
   }
 
   return (
-    <div className={`${isStretch ? "relative" : ""}`}>
+    <div className={"relative"}>
       <button
         className={`${isStretch ? "w-full justify-between" : ""} flex items-center gap-0.5 bg-neutral hover:bg-neutral-hover text-sm px-3 py-1.5 rounded shadow-sm select-none outline-primary`}
         type={"button"}
@@ -28,10 +28,10 @@ export const Select: FC<Props> = ({header, isStretch, getItem, data}) => {
       </button>
 
       <div
-        className={`absolute ${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} max-h-48 overflow-y-auto bg-neutral mt-2 px-2 py-1.5 shadow rounded z-10`}>
+        className={`absolute ${isOpen ? "" : "hidden"} ${isStretch ? "w-full" : ""} max-h-48 overflow-x-hidden overflow-y-auto bg-neutral mt-2 px-2 py-1.5 shadow rounded z-10`}>
         { data.map(item =>
           <p key={item.id}
-             className={"hover:bg-neutral-hover text-sm px-2 py-0.5 rounded select-none cursor-pointer"}
+             className={"min-w-max hover:bg-neutral-hover text-sm px-2 py-0.5 rounded select-none cursor-pointer"}
              onMouseDown={() => selectItem(item.id)}>{item.name}</p>
         )}
       </div>
