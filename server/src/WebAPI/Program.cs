@@ -23,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSwaggerGen(options =>
     {
         options.SwaggerDoc("v1", new OpenApiInfo { Title = "GameReviewLib.WebAPI", Version = "1.0" } );
+        options.UseInlineDefinitionsForEnums();
 
         var xmlDocPaths = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly).ToList();
         xmlDocPaths.ForEach(xmlDocPath => options.IncludeXmlComments(xmlDocPath));
