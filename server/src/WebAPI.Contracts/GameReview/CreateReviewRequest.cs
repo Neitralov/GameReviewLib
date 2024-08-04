@@ -32,6 +32,6 @@ public record CreateReviewRequest(
     public bool IsBestGame { get; init; } = IsBestGame;
     /// <example>This is like DiggerOnline</example>
     public string? Comment { get; init; } = Comment;
-    /// <example>/posters/poster1</example>
+    /// <example>q5jfvgt4.woi.webp</example>
     public string PosterPath { get; init; } = PosterPath;
 }
