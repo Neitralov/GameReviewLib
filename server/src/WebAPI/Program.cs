@@ -47,6 +47,7 @@ var app = builder.Build();
     app.UseCors("AllowGameReviewLib");
     app.UseFileServer();
     app.MapControllers();
+    app.MapFallbackToFile("index.html");
     app.Run();
 }
 
